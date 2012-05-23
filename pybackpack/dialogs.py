@@ -1,4 +1,4 @@
-import gtk
+from gi.repository import Gtk
 
 class Dialogs:
 
@@ -16,17 +16,17 @@ class Dialogs:
 
         '''Show an error dialog box with a message and store the user's response.'''
 
-        dlg = gtk.MessageDialog(self.parent, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_OK, message)
+        dlg = Gtk.MessageDialog(self.parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
+                                                    Gtk.ButtonsType.OK, message)
         dlg.connect("response", self._dlgresponse)
         dlg.show()
 
     def showmsg(self, message):
-        
+
         '''Show a message dialog box with a message and store the user's response.'''
 
-    	dlg = gtk.MessageDialog(self.parent, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
-                                                    gtk.BUTTONS_OK, message)
+    	dlg = Gtk.MessageDialog(self.parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO,
+                                                   Gtk.ButtonsType.OK, message)
         dlg.connect("response", self._dlgresponse)
         dlg.show()
 
@@ -35,8 +35,8 @@ class Dialogs:
         '''Show an information dialog box with a message and store the user's response.'''
 
         self.response = None
-        dlg = gtk.MessageDialog(self.parent, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
-                                            gtk.BUTTONS_OK_CANCEL, message)
+        dlg = Gtk.MessageDialog(self.parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO,
+                                           Gtk.ButtonsType.OK_CANCEL, message)
         dlg.connect("response", self._dlgresponse)
         dlg.show()
 
@@ -45,11 +45,24 @@ class Dialogs:
         '''Show a Yes/No dialog box with a message and store the user's response.'''
 
         self.response = None
-        dlg = gtk.MessageDialog(self.parent, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_QUESTION,
-                            gtk.BUTTONS_YES_NO, message)
+        dlg = Gtk.MessageDialog(self.parent, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.QUESTION,
+                           Gtk.ButtonsType.YES_NO, message)
         dlg.connect("response", self._dlgresponse)
         dlg.show()
 
     def _dlgresponse(self, widget, response):
         widget.destroy()
         self.response = response
+
+if __name__ == "__main__":
+    from gi.repository import GLib
+    w = Gtk.Window()
+    w.connect("destroy", lambda x,y: Gtk.main_quit())
+    d = Dialogs(w)
+    d.showerror("error")
+    d.showmsg("msg")
+    d.showinfo("info")
+    d.showyesno("yesno")
+
+    GLib.timeout_add_seconds(2, lambda x: Gtk.main_quit(), None)
+    Gtk.main()
