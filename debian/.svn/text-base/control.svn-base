@@ -1,0 +1,19 @@
+Source: pybackpack
+Section: gnome
+Priority: optional
+Maintainer: Andrew Price <andy@andrewprice.me.uk>
+Uploaders: Python Applications Packaging Team <python-apps-team@lists.alioth.debian.org>
+Build-Depends: cdbs, debhelper (>= 7), python-support (>= 0.3), python
+Standards-Version: 3.8.3
+Homepage: http://andrewprice.me.uk/projects/pybackpack/
+Vcs-Svn: svn://svn.debian.org/python-apps/packages/pybackpack/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-apps/packages/pybackpack/trunk/
+
+Package: pybackpack
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}, rdiff-backup (>= 0.12.7), python-gtk2, python-glade2, python-gnome2, python-brasero, genisoimage
+Description: user friendly file backup tool for GNOME
+ A graphical tool to make file backup simpler. Provides a
+ user-friendly interface to rdiff-backup which allows you
+ to back up your files easily to an archive, to a CD/DVD
+ or to a remote location using SSH.

@@ -1,0 +1,6 @@
+?package(pybackpack):needs="X11" \
+	section="Applications/File Management" \
+	title="Pybackpack" \
+	hints="Gnome" \
+	command="/usr/bin/pybackpack" \
+	longtitle="A friendly file backup manager"

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--*- mode: xml -*-->
+<glade-interface>
+  <widget class="GtkFileChooserDialog" id="filechooserdialog1">
+    <property name="title" translatable="yes">Select backup destination</property>
+    <property name="modal">True</property>
+    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="local_only">False</property>
+    <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+    <signal name="show" handler="on_filechooserdialog1_show"/>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="spacing">24</property>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <child>
+              <widget class="GtkButton" id="filechooser_cancel">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="label">gtk-cancel</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">-6</property>
+                <signal name="clicked" handler="on_filechooser_cancel_clicked"/>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkButton" id="filechooser_open">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="label">gtk-open</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">-5</property>
+                <signal name="clicked" handler="on_filechooser_open_clicked"/>
+              </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">GTK_PACK_END</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>

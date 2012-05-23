@@ -1,0 +1,75 @@
+Pybackpack - A simple file backup tool
+--------------------------------------
+
+What is Pybackpack?
+-------------------
+
+Pybackpack is a graphical application designed to make file backup easy for the
+average user. It allows the user to specify named sets of files and directories
+to be be backed up so that the backups can be run many times. Where possible
+Pybackpack does incremental backups; it is a graphical front-end to
+rdiff-backup. Pybackpack can backup files to remote locations over the network,
+local file systems, and optical media such as writable CDs or DVDs.
+
+What is Pybackpack not?
+-----------------------
+
+It is not for backing up entire systems. Running Pybackpack as root is not
+recommended. It does not create encrypted backups or backup special files
+(device nodes, sockets, FIFOs).
+
+History
+-------
+
+Dave Arter created Pybackpack for Fedora Core as a Google Summer of Code
+project in 2005. Since August 2006 it has been maintained by Andrew Price.
+Swansea University Computer Society has kindly provided project hosting for it
+since the beginning. For a more detailed feature history see the CHANGELOG
+file.
+
+Reporting Bugs
+--------------
+
+If you are using a Pybackpack package packaged for your operating system
+distribution (e.g. from the Ubuntu, Debian or Fedora package repositories) then
+use the bug reporting systems for that distribution (e.g. Launchpad, BTS, or
+Bugzilla).
+
+If you are using an original tarball or svn version of Pybackpack, open a new
+ticket on the Trac instance:
+
+  http://projects.sucs.org/projects/pybackpack#Bugs
+
+Or the mailing list:
+
+  http://lists.sucs.org/mailman/listinfo/pybackpack
+
+In all cases please provide the version of Pybackpack you are using and as much
+detail about the bug as you can.
+
+Patches and testing
+-------------------
+
+All patches should be against the latest trunk code in the subversion
+repository. For more details:
+
+  http://projects.sucs.org/projects/pybackpack#DevelopTest
+
+Localization
+-------------
+
+For information about translating Pybackpack to your own language:
+
+  http://projects.sucs.org/projects/pybackpack/wiki/TranslationGuide
+
+License
+-------
+
+Pybackpack is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the LICENSE file for more details.

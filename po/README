@@ -1,0 +1,53 @@
+For translators:
+
+See this page for a more thorough guide:
+
+ http://projects.sucs.org/projects/pybackpack/wiki/TranslationGuide
+
+To translate Pybackpack into a different language:
+
+1  If there is NOT already a .po file in your language (e.g. en_GB.po), copy
+   pybackpack.pot to <LANG>.po
+2. Edit <LANG>.po, inserting the translations of the msgid lines into the
+   msgstr lines just below them. Ignore any lines which begin with #. For this
+   step you might want to use a .po file editor such as poedit <http://www.poedit.net/>
+
+To test your translations without installing Pybackpack you can use the
+test-trans.sh script in the po/ directory like so:
+
+   ./test-trans.sh <LANG>.po
+
+Or, if the locale is different to your current locale:
+
+   LC_ALL=<LOCALE> ./test-trans.sh <LANG>.po
+
+For example:
+
+   LC_ALL=it_IT.UTF-8 ./test-trans.sh it.po
+
+To translate data/pybackpack.desktop, you can add Name[XX]= and Comment[XX]=
+lines where XX is your language code.
+  e.g. Name[en]=File backup manager
+
+To submit your translation for inclusion in pybackpack, please email your
+<LANG>.po file and your .desktop file changes to pybackpack@lists.sucs.org
+stating clearly which version of Pybackpack the translation is for. (Hint:
+Translations of the latest svn version are the most useful).
+
+
+For developers:
+
+Translation template pybackpack.pot generated using:
+
+xgettext --copyright-holder='Andrew Price' --msgid-bugs-address=pybackpack@lists.sucs.org \
+ -o pybackpack.pot ../pybackpack/*.py ../pybackpack/*.glade
+
+Merge new strings into existing translations:
+
+./merge-new.sh
+
+Translators should not run the above two commands as they will generate a
+different pybackpack.pot file and create inconsistencies.
+
+
+Have a nice day.
