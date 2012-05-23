@@ -1,0 +1,24 @@
+    How to install pybackpack
+  -----------------------------
+
+o Dependencies
+  - python
+  - pygtk
+  - pyglade
+  - rdiff-backup
+  - genisoimage
+  - nautilus-cd-burner (optional but currently needed for backup to CD/DVD)
+
+o Intro
+  Pybackpack uses distutils for its standard installation procedure so the
+  setup.py script provides installation routines. Note that it doesn't provide
+  uninstallation routines. If you require uninstallation and upgrade handling,
+  that's what package managers are for. Consider using one.
+
+o Installation
+  To install pybackpack to the default place on your system, run as root:
+
+     ./setup.py install
+
+  If you wish to install it to a different root or prefix (e.g.
+  --prefix=/usr/local) see ./setup.py install --help for options.

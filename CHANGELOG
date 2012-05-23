@@ -1,0 +1,156 @@
+* = new feature, + = improvement/bug fix, - = feature removed
+New in v0.5.8 (07/01/2010)
+--------------------------
++ Fix set editor to use braseromedia
++ No longer back up sockets, device files or fifos
++ Add German translations from Julian Aloofi
++ Replace the backup set tree view with a combo box in the backup tab
++ Redo Help->About as a gtk AboutDialog
++ Reduce dependency on gnome-specific modules
++ Improve the README file
+
+New in v0.5.7 (03/12/2009)
+--------------------------
++ Don't recurse into excluded directories (bugs #57 and #70)
++ Add 'Show hidden files' button to the set editor (jsogo's patch, bug #73)
++ Update gui.glade to latest format
++ Add scripts for managing and testing translations
++ Improve abstraction of backup methods
++ Migrate from nautilusburn to the brasero bindings
++ Rearrange GUI widgets to support l10n better
+* Initial Italian translations by Andrea Tomasseo
+* Initial Russian translations by Lex Ross
+* Allow msg catalogue path to be set using the PBP_LOCALE_DIR env var
+
+New in v0.5.6 (25/09/2008)
+--------------------------
++ Remove Encoding key from pybackpack.desktop
++ Remove ancient "Foo" placeholder labels
++ Add Japanese translation by Tomoe Sugihara
++ Improve error reporting when genisoimage fails
++ Various code refactoring
++ Fix backup set selection and 'backup' button sensitivity bugs
+* New build_mo command in setup.py to build message catalogues
+* setup.py now installs message catalogues
+
+New in v0.5.5 (08/09/2008)
+--------------------------
++ Fix TypeError in on_overwrite_dialog_response()
++ Fix TypeError in on_treeview_backup_sets_cursor_changed()
++ Fix OSError in rmtree()
++ Fix AttributeError in do_ssh_backup() (bug #64)
++ Add Czech translation by Kamil Páral
++ Fix parts of GUI where text was being obscured
+
+New in v0.5.4 (23/12/2007)
+--------------------------
++ Code cleanup based on pychecker results
++ Use genisoimage instead of mkisofs
++ Rearrange the source tree for easier installation and packaging
++ Set the backup set path on creation (bug #60)
++ Strip newlines from MRU entries
+
+New in v0.5.3 (08/12/2007)
+--------------------------
++ Fixed showstopper bug
+
+New in v0.5.2 (03/12/2007)
+--------------------------
++ Improved abstractions using new BackupSet class
++ Various minor bug fixes and tweaks
++ New translations
+
+New in v0.5.1 (26/5/2007)
+--------------------------
++ Applied distro patches for easier packaging
++ Better handling of the absence of nautilusburn
++ Use scp instead of gnomevfs where it makes sense
++ Now mentions DVD burning as well as CD burning
++ Replaced deprecated string exception with exception class
++ Now called File Backup Manager in menu
++ Now shows in the System -> Administration menu
++ Various minor tweaks
+
+New in v0.5.0 (8/4/2007)
+--------------------------
+* i18n support using gettext
++ Refactored code
++ Better progress monitoring of mkisofs
++ Saner handling of ssh password/phrase prompting
++ Various minor tweaks and fixes
+
+New in v0.4.5 (6/1/2007)
+--------------------------
++ Progress bars now show progress properly
++ Fixed directory/file walk is too slow (bug #36)
++ Fixed does not use busy cursor when it's busy (bug #37)
++ Fixed does not redraw screen during "starting backup" (bug #35)
+
+New in v0.4.4 (20/11/2006)
+--------------------------
++ Fixed broken-symlinks-cause-error (bug #34)
++ Fixed Backing up homedir to homedir causes infinite loop (bug #33)
++ Remembered to increment the version number in setup.py this time
+
+New in v0.4.3 (18/11/2006)
+--------------------------
+* New maintainer
+* Added man page
++ Updated to work with another newer nautilusburn API (bug #30)
++ Fixed symlink-causes-recursion bug - now uses os.walk()
++ Uses a friendly window title (bug #24)
+
+New in v0.4.2 (22/04/2006)
+--------------------------
++ Resolved crash on startup (bug #23)
++ Updated to work with newer nautilusburn API
+
+New in v0.4.1 (19/09/2005)
+--------------------------
+* pyBackPack logo in the about box - credit goes to Graham Cole <chckens@sucs.org>
++ Fixed bug #17 (spacing between actions in output log)
+
+New in v0.4 (28/08/2005)
+------------------------
+* SSH backups + restores
++ Increments in the restore window are listed with the most recent first
++ The GUI no longer locks when doing a backup, and gives an indication
+  of how much of the backup it's done
+  
+New in v0.3 (26/08/2005)
+------------------------
++ Tidier interface - output log is in its own window, and is common to
+  restores and backups.
++ Fixed the logic that checks if a destination directory is suitable to write to
+- Removed SSH/network elements from the interface until the code to make them
+  work is ready.
+
+New in v0.2.999 (23/08/2005)
+------------------------
+* Backup sets are editable
+* Files and directories can now be excluded from a backup set
+* An immutable backup set called 'home' is created automatically
+* Single-click home directory backup to CD from the main window
+* local backups and restores keep a history list of destinations/sources
++ Checks are made on the files to be backed up (are they all readable,
+  do all paths specified in the backup set exist?)
++ Replaced the cdrecord shell command with nautilusburn,
+  and gave it a shiny new interface to match.
++ It'll actually burn CDs now - I accidentally left the cdrecord
+  '-dummy' flag turned on in 0.2 ;)
+  
+New in v0.2 (17/08/2005)
+-----------------------
+- User interface looks nicer and works a little more intuitively
+- Output logs now report something more meaningful
+- CD backups/restores are now possible
+  This in particular needs lots of testing to see how it copes with
+  different hardware combinations
+- Network (SSH) code is not yet active, should be done for 0.3
+- It's now possible to do multiple backups/restores in the same
+  instance of pybackpack
+- lots of other small improvements
+
+New in v0.1 (14/08/2005)
+------------------------
+- Initial release.

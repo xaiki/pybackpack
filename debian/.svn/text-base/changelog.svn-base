@@ -1,0 +1,116 @@
+pybackpack (0.5.8-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/copyright - Clean up and update
+  * debian/compat - Bump to 7
+  * debian/control - Bump the required version of debhelper
+  * debian/rules - Do not use DEB_INSTALL_CHANGELOGS_ALL - debhelper 7 can
+    discover the changelog automatically.
+
+ -- Andrew Price <andy@andrewprice.me.uk>  Fri, 08 Jan 2010 07:11:50 +0000
+
+pybackpack (0.5.7-1) unstable; urgency=low
+
+  * New upstream release
+  * Update to standards version 3.8.3
+    - No changes required
+  * debian/control:
+    - Mention rdiff-backup in the package description (Closes: #554818)
+    - Build-dep on python instead of python-dev which isn't needed
+    - Depend on python-brasero instead of python-nautilusburn
+      (Closes: #544625)
+
+ -- Andrew Price <andy@andrewprice.me.uk>  Thu, 03 Dec 2009 23:42:03 +0000
+
+pybackpack (0.5.6-2) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - switch Vcs-Browser field to viewsvn
+
+  [ Marco Rodrigues ]
+  * debian/control:
+    + Add ${misc:Depends} to Depends to remove
+      lintian warning.
+
+  [ Andrew Price ]
+  * debian/control:
+    - Replace python-gnome2-desktop dep with python-nautilusburn
+    - use maintainer's full name
+  * debian/copyright
+    - refer to versioned GPL-2 file instead of GPL
+    - use maintainer's full name
+    - update year
+  * Update Standards-Version to 3.8.1
+    - no packaging changes needed
+
+ -- Andrew Price <andy@andrewprice.me.uk>  Mon, 01 Jun 2009 18:35:23 +0100
+
+pybackpack (0.5.6-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/control: remove 'A' from the short description
+  * debian/pyversions created (Python >= 2.5 is required now)
+  * Upstream now installs translations
+    - No changes needed: cdbs handles translations and pulls in gettext
+
+ -- Andy Price <andy@andrewprice.me.uk>  Fri, 26 Sep 2008 21:24:51 +0100
+
+pybackpack (0.5.5-1) unstable; urgency=low
+
+  * New upstream release
+  * Update Standards-Version to 3.8.0.
+    - No package changes needed.
+
+ -- Andy Price <andy@andrewprice.me.uk>  Mon, 08 Sep 2008 14:44:06 +0100
+
+pybackpack (0.5.4-1) unstable; urgency=low
+
+  [ Andy Price ]
+  * New upstream release
+  * Update debian/docs - TODO file has been removed
+  * Depend on genisoimage which upstream now uses
+  * Remove debian/dirs - distutils creates usr/bin
+  * Fix section in debian/menu to follow menu guidelines
+
+  [ Piotr Ożarowski ]
+  * Homepage field added
+  * Rename XS-Vcs-* fields to Vcs-* (dpkg supports them now)
+
+  [ Marco Rodrigues ]
+  * Update Standards-Version to 3.7.3.
+
+ -- Andy Price <andy@andrewprice.me.uk>  Sun, 23 Dec 2007 15:07:21 +0000
+
+pybackpack (0.5.1-2) unstable; urgency=low
+
+  [ Andy Price ]
+  * Add Python Applications Packaging Team to the Uploaders
+  * Add watch file
+  * Add XS-Vcs-Svn and XS-Vcs-Browser fields
+
+  [ Piotr Ożarowski ]
+  * Add debian/menu file
+  * Add Homepage pseudo header
+  * Removed Provides: ${python:Provides} (not really needed)
+
+ -- Andy Price <andy@andrewprice.me.uk>  Mon, 27 Aug 2007 19:15:26 +0100
+
+pybackpack (0.5.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Removed obsolete patches
+  * Removed build-dependency on rdiff-backup
+
+ -- Andy Price <andy@andrewprice.me.uk>  Sat, 26 May 2007 23:49:05 +0100
+
+pybackpack (0.5.0-1) unstable; urgency=low
+
+  * Initial release. Closes: #418424
+  * Required patches for lintian cleanliness:
+    - 01_not-scripts.patch: Remove shebangs etc from non-executables
+    - 02_install_manpage.patch: Make setup.py install the manpage
+    - 03_docs_dir.patch: Don't install versioned docs directory
+
+ -- Andy Price <andy@andrewprice.me.uk>  Mon,  9 Apr 2007 04:31:34 +0100
+

@@ -1,0 +1,1228 @@
+# Strings for translation template for pybackpack.
+# Copyright (C) 2008 Andy Price
+# This file is distributed under the same license as the pybackpack package.
+# Andrea Tommaseo <andreaonline@altervista.org>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.5.6\n"
+"Report-Msgid-Bugs-To: pybackpack@lists.sucs.org\n"
+"POT-Creation-Date: 2010-01-07 22:33+0000\n"
+"PO-Revision-Date: 2009-07-04 15:37+0200\n"
+"Last-Translator: Andrea Tommaseo <andreaonline@altervista.org>\n"
+"Language-Team: italiano <andreaonline@altervista.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../pybackpack/actions.py:30
+msgid "No read permission on destination directory"
+msgstr "Permessi di lettura mancanti nella cartella di destinazione"
+
+#: ../pybackpack/actions.py:31
+msgid "No write permission on destination directory"
+msgstr "Permessi di scrittura mancanti nella cartella di destinazione"
+
+#: ../pybackpack/actions.py:32
+msgid "No execute permission on destionation directory"
+msgstr "Permessi di esecuzione mancanti nella cartella di destinazione"
+
+#: ../pybackpack/actions.py:33
+msgid ""
+"Destination is home directory. This would remove the files in your home "
+"directory. Please choose a different location."
+msgstr ""
+"La destinazione è la tua cartella personale. Questo cancellerà tutti i file "
+"nella tua cartella personale. Scegli un percorso diverso."
+
+#: ../pybackpack/actions.py:34
+msgid "Could not create destination directory"
+msgstr "Impossibile creare cartella di destinazione"
+
+#: ../pybackpack/actions.py:35
+msgid "Destination directory is not empty"
+msgstr "La cartella di destinazione non è vuota"
+
+#: ../pybackpack/actions.py:104
+msgid "Creating destination directory"
+msgstr "Creazione della cartella di destinazione"
+
+#: ../pybackpack/actions.py:136
+msgid "Analyzing source files"
+msgstr "Analisi file sorgenti"
+
+#: ../pybackpack/actions.py:140
+msgid "Destination directory in backup source. Omitting."
+msgstr "Destinazione all'interno della sorgente. Omesso."
+
+#: ../pybackpack/actions.py:148
+msgid "NOTE: Destination directory inside backup set. Omitting."
+msgstr "NOTA: Cartella di destinazione dentro il profilo. Omesso."
+
+#: ../pybackpack/actions.py:160
+msgid "Files found"
+msgstr "File trovati"
+
+#: ../pybackpack/actions.py:164
+msgid "Backup source analysis complete."
+msgstr "Analisi della sorgente backup ultimata."
+
+#: ../pybackpack/actions.py:172
+msgid "Running backup"
+msgstr "Eseguo backup"
+
+#: ../pybackpack/actions.py:176
+msgid "Creating backup"
+msgstr "Creazione backup"
+
+#: ../pybackpack/actions.py:189
+#, python-format
+msgid "Backup failed: %s"
+msgstr "Backup fallito: %s"
+
+#: ../pybackpack/actions.py:194 ../pybackpack/actions.py:288
+msgid "Backup complete"
+msgstr "Backup ultimato"
+
+#: ../pybackpack/actions.py:231
+msgid "Creating CD image"
+msgstr "Creazione immagine CD"
+
+#: ../pybackpack/actions.py:237
+msgid "Creating temporary backup"
+msgstr "Creazione backup temporaneo"
+
+#: ../pybackpack/actions.py:245
+#, python-format
+msgid "Backup failed; could not create CD image %(filename)s: %(error)s\n"
+msgstr ""
+"Backup fallito; non riesco a creare l'immagine CD %(filename)s: %(error)s\n"
+
+#: ../pybackpack/actions.py:253
+msgid "Writing image to CD/DVD"
+msgstr "Scrittura immagine su CD/DVD"
+
+#: ../pybackpack/actions.py:268 ../pybackpack/actions.py:276
+msgid "An error occurred while burning the CD."
+msgstr "Errore masterizzando il CD."
+
+#: ../pybackpack/actions.py:280
+msgid "Cleaning up temporary files"
+msgstr "Pulizia file temporanei"
+
+#: ../pybackpack/actions.py:302
+msgid ""
+"\n"
+"User"
+msgstr ""
+"\n"
+"Utente"
+
+#: ../pybackpack/actions.py:304
+msgid ""
+"\n"
+"Host"
+msgstr ""
+"\n"
+"Host"
+
+#: ../pybackpack/actions.py:306
+msgid ""
+"\n"
+"Path"
+msgstr ""
+"\n"
+"Percorso"
+
+#: ../pybackpack/actions.py:309
+#, python-format
+msgid "Missing fields:%s"
+msgstr "Mancano i campi:%s"
+
+#: ../pybackpack/actions.py:330
+msgid "Transferring backup set data"
+msgstr "Trasferimento dati del profilo"
+
+#: ../pybackpack/actions.py:333
+#, python-format
+msgid ""
+"Backup completed, but could not copy the backup set data file. You can "
+"manually copy this file from\n"
+"%(source)s\n"
+" to\n"
+"%(filepath)s (on host %(hostname)s)"
+msgstr ""
+"Backup ultimato ma non riesco a copiare il file dati del profilo. Puoi "
+"copiare manualmente questo file da\n"
+"%(source)s\n"
+" a\n"
+"%(filepath)s (on host %(hostname)s)"
+
+#: ../pybackpack/actions.py:338
+msgid "Backup completed"
+msgstr "Backup ultimato"
+
+#: ../pybackpack/actions.py:341
+#, python-format
+msgid "An error occurred while transferring '%s'."
+msgstr "Errore nel trasferire '%s'."
+
+#: ../pybackpack/backupsets.py:25 ../pybackpack/backuptool.py:37
+#: ../pybackpack/backuptool.py:42 ../pybackpack/gui.py:148
+#: ../pybackpack/seteditor.py:127
+msgid "home"
+msgstr "cartella personale"
+
+#: ../pybackpack/backupsets.py:170
+#, python-format
+msgid "No 'filelist' for %s"
+msgstr "'filelist' non presente per %s"
+
+#: ../pybackpack/backupsets.py:185
+#, python-format
+msgid "Couldn't read in description file: %s"
+msgstr "Impossibile leggere il file di descrizione: %s"
+
+#: ../pybackpack/backupsets.py:197
+#, python-format
+msgid "Couldn't parse %(filename)s fully: %(error)s"
+msgstr "Impossibile analizzare %(filename)s completamente: %(error)s"
+
+#: ../pybackpack/backuptool.py:43
+msgid "A complete backup of your home directory."
+msgstr "Un backup completo della tua cartella personale."
+
+#: ../pybackpack/filechooser.py:26
+msgid "Unable to initialise filechooser"
+msgstr "Impossibile inizializzare il selettore di file"
+
+#: ../pybackpack/findfiles.py:21
+#, python-format
+msgid "Found %s settings."
+msgstr "Trovato profilo %s"
+
+#: ../pybackpack/gui.py:59
+msgid "New backup set"
+msgstr ""
+
+#: ../pybackpack/gui.py:64 ../pybackpack/gui.glade:7
+msgid "File Backup Manager"
+msgstr "File Backup Manager"
+
+#: ../pybackpack/gui.py:101
+msgid "Edit a new backup set"
+msgstr ""
+
+#: ../pybackpack/gui.py:149
+msgid "You cannot delete this set."
+msgstr "Non puoi cancellare questo profilo."
+
+#: ../pybackpack/gui.py:154
+#, python-format
+msgid ""
+"Are you sure you wish to delete the backup set '%s'?\n"
+"Deleting this backup set will not delete any previous backups, nor will it "
+"affect your ability to restore them."
+msgstr ""
+"Sei sicuro di voler cancellare questo profilo '%s'?\n"
+"Cancellando questo profilo non cancellerai i backup precedenti, e non ti "
+"sarà impedito il ripristino."
+
+#: ../pybackpack/gui.py:169
+msgid ""
+"There are no remaining backup sets.\n"
+"To create a new backup set, click 'New'."
+msgstr ""
+"non c'è nessun profilo.\n"
+"Per crearne uno clicca su 'Nuovo'."
+
+#: ../pybackpack/gui.py:172
+msgid "Select a backup set from the list on the left."
+msgstr "Seleziona un profilo dalla lista di sinistra."
+
+#: ../pybackpack/gui.py:193
+msgid "Selected backup set cannot be edited."
+msgstr "Il profilo selezionato non può essere modificato."
+
+#: ../pybackpack/gui.py:233
+msgid "Burning CD/DVD"
+msgstr "Masterizzazione CD/DVD"
+
+#: ../pybackpack/gui.py:235
+msgid "Waiting for CD/DVD"
+msgstr "In attesa di CD/DVD"
+
+#: ../pybackpack/gui.py:243
+#, python-format
+msgid "Starting backup of '%s' to CD\n"
+msgstr "Avvio backup di '%s' su CD\n"
+
+#: ../pybackpack/gui.py:246
+msgid "No CD burners detected."
+msgstr "Nessun masterizzatore CD rilevato."
+
+#: ../pybackpack/gui.py:247
+msgid "Backup failed; no CD burners detected.\n"
+msgstr "Backup fallito; nessun Masterizzatore rilevato.\n"
+
+#: ../pybackpack/gui.py:264 ../pybackpack/gui.py:356
+msgid ""
+"The destination directory is not empty and it doesn't look like a previous "
+"backup. Continue?"
+msgstr ""
+"La cartella di destinazione non è vuota e non sembra contenere backup "
+"precedenti. Proseguo?"
+
+#: ../pybackpack/gui.py:329
+msgid "Please select a location to back up to."
+msgstr "Seleziona la destinazione del backup."
+
+#: ../pybackpack/gui.py:331
+#, python-format
+msgid "Starting backup of '%(backup)s' to '%(destination)s'\n"
+msgstr "Avvio backup di '%(backup)s' in '%(destination)s'\n"
+
+#: ../pybackpack/gui.py:333
+msgid "Starting backup"
+msgstr "Avvio backup"
+
+#: ../pybackpack/gui.py:335
+#, python-format
+msgid "Please connect and mount the device for '%s'"
+msgstr "Collega e monta la periferica per '%s'"
+
+#: ../pybackpack/gui.py:339
+msgid "Backup cancelled by user.\n"
+msgstr "Backup annullato dall'utente.\n"
+
+#: ../pybackpack/gui.py:348
+msgid "Checking destination directory"
+msgstr "Controllo cartella di destinazione"
+
+#: ../pybackpack/gui.py:364 ../pybackpack/gui.py:406
+msgid "Backup completed.\n"
+msgstr "Backup ultimato.\n"
+
+#: ../pybackpack/gui.py:391
+#, python-format
+msgid "Starting backup of '%(backup)s' to '%(hostname)s'"
+msgstr "Avvio backup di '%(backup)s' in '%(hostname)s"
+
+#: ../pybackpack/gui.py:420
+msgid "Select a backup destination"
+msgstr "Selezione la destinazione del backup"
+
+#: ../pybackpack/gui.py:439
+msgid "Select a default remote location to backup to"
+msgstr "Seleziona la destinazione remota predefinita"
+
+#: ../pybackpack/gui.py:442 ../pybackpack/seteditor.py:267
+msgid "Select a default remote location to backup to."
+msgstr "Seleziona la destinazione remota predefinita."
+
+#: ../pybackpack/gui.py:459
+msgid "Select a location to restore from"
+msgstr "Seleziona la sorgente per il ripristino "
+
+#: ../pybackpack/gui.py:487
+msgid "Only sftp:// and file:// locations are supported."
+msgstr "Solo percorsi sftp:// e file:// sono supportati."
+
+#: ../pybackpack/gui.py:491
+msgid "Click the 'refresh' button to read this backup set"
+msgstr "Clicca il pulsante 'aggiorna' per leggere questo profilo"
+
+#: ../pybackpack/gui.py:501 ../pybackpack/gui.py:644
+#, python-format
+msgid "This data will be restored to %s"
+msgstr "Questi dati saranno ripristinati in %s"
+
+#: ../pybackpack/gui.py:531
+#, python-format
+msgid "Starting restore operation from '%s'\n"
+msgstr "Inizio operazione di ripristino da '%s'\n"
+
+#: ../pybackpack/gui.py:532
+msgid "Starting restore operation..."
+msgstr "Avvio operazione di ripristino..."
+
+#: ../pybackpack/gui.py:541
+#, python-format
+msgid "An error occurred when trying to create '%s'."
+msgstr "Errore nella creazione di '%s'."
+
+#: ../pybackpack/gui.py:542
+#, python-format
+msgid "Restore failed; could not create destination path '%s'\n"
+msgstr "Ripristino fallito; impossibile creare percorso di destinazione '%s'\n"
+
+#: ../pybackpack/gui.py:547
+#, python-format
+msgid "You don't have permission to write to '%s'.\n"
+msgstr "Non possiedi i permessi di scrittura in '%s'.\n"
+
+#: ../pybackpack/gui.py:552
+#, python-format
+msgid "There are already files in '%s'."
+msgstr "Ci sono già dei file in %s'."
+
+#: ../pybackpack/gui.py:553
+msgid ""
+"If you restore your backup to this location, these files will be erased "
+"permanently."
+msgstr ""
+"Se ripristini il tuo backup in questo percorso, questi file saranno "
+"cancellati definitivamente."
+
+#: ../pybackpack/gui.py:554
+msgid "Are you sure you want to do this?"
+msgstr "Sei sicuro di volerlo?"
+
+#: ../pybackpack/gui.py:559
+msgid "Checking restore source..."
+msgstr "Controllo sorgente di ripristino..."
+
+#: ../pybackpack/gui.py:564
+msgid "Copying from CD..."
+msgstr "Copio da CD..."
+
+#: ../pybackpack/gui.py:565
+#, python-format
+msgid "Copying from CD (%(count)d files) to %(destination)s."
+msgstr "Copio da CD (%(count)d files) a %(destination)s."
+
+#: ../pybackpack/gui.py:576
+#, python-format
+msgid ""
+"Couldn't copy CD from '%(cdpath)s' to '%(destination)s'.\n"
+"Please check there is enough disk space and try again."
+msgstr ""
+"Impossibile copiare CD da '%(cdpath)s' a '%(destination)s'.\n"
+"Controlla se c'è sufficiente spazio libero su disco e ritenta."
+
+#: ../pybackpack/gui.py:579
+msgid "Restore failed; could not copy CD to temporary location.\n"
+msgstr ""
+"Ripristino fallito; impossibile copiare il CD nella cartella temporanea\n"
+
+#: ../pybackpack/gui.py:581
+msgid "CD copy finished."
+msgstr "Copia CD terminata."
+
+#: ../pybackpack/gui.py:582
+msgid "Restoring files..."
+msgstr "Ripristino files..."
+
+#: ../pybackpack/gui.py:590
+msgid "Restoring files."
+msgstr "Ripristino files."
+
+#: ../pybackpack/gui.py:599
+#, python-format
+msgid "An error occurred whilst restoring from '%s'."
+msgstr "Errore ripristinando da '%s'."
+
+#: ../pybackpack/gui.py:603
+#, python-format
+msgid "Cleaning up %s..."
+msgstr "Pulizia %s..."
+
+#: ../pybackpack/gui.py:604
+#, python-format
+msgid "Cleaning up temporary files from %s."
+msgstr "Pulizia file temporanei da %s."
+
+#: ../pybackpack/gui.py:608
+#, python-format
+msgid "Cleaning up temporary files failed, please manually delete %s"
+msgstr "Pulizia file temporanei fallita; cancellali manualmente %s"
+
+#: ../pybackpack/gui.py:611
+msgid "Restore succeeded.\n"
+msgstr "Ripristino effettuato.\n"
+
+#: ../pybackpack/gui.py:613
+#, python-format
+msgid ""
+"Restore succeeded.\n"
+"The restored files are in 'restored_files/%s' in your home directory."
+msgstr ""
+"Ripristino effettuato.\n"
+"I file ripristinati si trovano in 'restored_files/%s' all'interno della tua "
+"cartella personale."
+
+#: ../pybackpack/gui.py:657
+msgid ""
+"An error occurred while reading the remote backup set information.\n"
+"Please check the username, host name and path that you have entered and try "
+"again."
+msgstr ""
+"Errore nel leggere le informazioni del profilo di backup remoto.\n"
+"Controlla il nome utente, il nome host e il percorso che hai immesso e "
+"ritenta."
+
+#: ../pybackpack/gui.py:675
+#, python-format
+msgid "%s is a tool for backing up user data for the GNOME Desktop"
+msgstr "%s è uno strumento di backup dei dati dell'utente per il desktop GNOME"
+
+#: ../pybackpack/gui.py:697
+msgid "Copying from CD:"
+msgstr "Copio da CD:"
+
+#: ../pybackpack/gui.py:708
+#, python-format
+msgid "Could not remove '%(filename)s': %(error_msg)s"
+msgstr "Impossibile rimuovere '%(filename)s': %(error_msg)s"
+
+#: ../pybackpack/gui.py:712
+msgid "Operation failed.\n"
+msgstr "Operazione fallita.\n"
+
+#: ../pybackpack/gui.py:717
+msgid "Restore aborted, no files were changed.\n"
+msgstr "Ripristino interrotto, nessun file è stato modificato.\n"
+
+#: ../pybackpack/rdiff_interface.py:178
+msgid "Error:"
+msgstr "Errore:"
+
+#: ../pybackpack/rdiff_interface.py:179
+msgid "rdiff-backup version: "
+msgstr "rdiff-backup versione: "
+
+#: ../pybackpack/rdiff_interface.py:180
+msgid "version:"
+msgstr "versione:"
+
+#: ../pybackpack/seteditor.py:26
+msgid "Unable to start the backup set editor"
+msgstr "Impossibile avviare l'editor di profili"
+
+#: ../pybackpack/seteditor.py:56
+msgid "Path"
+msgstr "Percorso"
+
+#: ../pybackpack/seteditor.py:86 ../pybackpack/seteditor.glade:7
+msgid "Create New Backup Set"
+msgstr "Crea Nuovo Profilo di Backup"
+
+#: ../pybackpack/seteditor.py:105 ../pybackpack/seteditor.glade:940
+msgid "0 items"
+msgstr "0 elementi"
+
+#: ../pybackpack/seteditor.py:176
+#, python-format
+msgid "Editing backup set '%s'"
+msgstr "Modifica profilo di backup '%s'"
+
+#: ../pybackpack/seteditor.py:182
+msgid "Editing new backup set"
+msgstr ""
+
+#: ../pybackpack/seteditor.py:218
+#, python-format
+msgid ""
+"A set with the name '%s' already exists.\n"
+"You can either enter a new name in the text box above, or overwrite the "
+"existing set."
+msgstr ""
+"Un profilo con nome '%s' è già esistente.\n"
+"Puoi inserire un nuovo nome nel campo di testo soprastante, oppure "
+"sovrascrivere il profilo esistente."
+
+#: ../pybackpack/seteditor.py:250
+#, python-format
+msgid "Add Files/Folders to '%s'"
+msgstr "Aggiungi File/Cartelle a '%s'"
+
+#: ../pybackpack/seteditor.py:256
+msgid "You cannot create an empty backup set."
+msgstr "Non puoi creare un profilo di backup vuoto."
+
+#: ../pybackpack/seteditor.py:283
+msgid "Select a default destination"
+msgstr "Seleziona una destinazione predefinita"
+
+#: ../pybackpack/seteditor.py:318
+#, python-format
+msgid "ERROR: Couldn't write new set %(name)s: %(error)s"
+msgstr "ERRORE: Impossibile scrivere il nuovo profilo %(name)s: %(error)s"
+
+#: ../pybackpack/seteditor.py:332 ../pybackpack/seteditor.py:348
+#: ../pybackpack/seteditor.py:359
+msgid "1 item"
+msgstr "1 elemento"
+
+#: ../pybackpack/seteditor.py:334 ../pybackpack/seteditor.py:350
+#: ../pybackpack/seteditor.py:361
+#, python-format
+msgid "%d items"
+msgstr "%d elementi"
+
+#: ../pybackpack/seteditor.py:369
+msgid ""
+"No CD burners available, because you do not have the python module "
+"braseromedia."
+msgstr ""
+
+#: ../pybackpack/statuswindow.py:20
+msgid "Failed to initialise status window."
+msgstr "Fallita apertura della finestra di stato."
+
+#: ../pybackpack/filechooser.glade:6
+msgid "Select backup destination"
+msgstr "Seleziona la destinazione del backup"
+
+#: ../pybackpack/gui.glade:20
+msgid "_File"
+msgstr "_File"
+
+#: ../pybackpack/gui.glade:26
+msgid "New _Backup Set..."
+msgstr "Nuovo _Profilo..."
+
+#: ../pybackpack/gui.glade:42
+msgid "_Restore From..."
+msgstr "_Ripristina da..."
+
+#: ../pybackpack/gui.glade:78
+msgid "_View"
+msgstr "_Visualizza"
+
+#: ../pybackpack/gui.glade:84
+msgid "_Status Window"
+msgstr "Finestra di _Stato"
+
+#: ../pybackpack/gui.glade:104
+msgid "_Help"
+msgstr "_Aiuto"
+
+#: ../pybackpack/gui.glade:158
+msgid ""
+"To backup your entire home directory to a blank CD or DVD, click the 'Go' "
+"button. This backup will include all of your personal settings, documents, e-"
+"mails and any other readable files stored in your home directory. For more "
+"options or to backup a different set of files, click the tab labelled "
+"'Backup' above."
+msgstr ""
+"Per fare il backup dell'intera cartella personale in un  CD o DVD vuoto, "
+"clicca sul pulsante 'Via'. Questo backup includerà tutte le impostazioni "
+"personali, documenti, e-mail e ogni altro file leggibile che si trova nelle "
+"tua cartella personale. Per ulteriori opzioni o per salvare altri file, "
+"clicca la scheda 'Backup' soprastante."
+
+#: ../pybackpack/gui.glade:196
+msgid "Go"
+msgstr "Via"
+
+#: ../pybackpack/gui.glade:221
+msgid "<b>Home Directory Backup</b>"
+msgstr "<b>Backup Cartella Personale</b>"
+
+#: ../pybackpack/gui.glade:247
+msgid "Home"
+msgstr "Cartella Personale"
+
+#: ../pybackpack/gui.glade:336 ../pybackpack/gui.glade:1078
+#: ../pybackpack/seteditor.glade:144 ../pybackpack/seteditor.glade:1052
+msgid "Description:"
+msgstr "Descrizione:"
+
+#: ../pybackpack/gui.glade:366
+msgid "<b>Backup set</b>"
+msgstr ""
+
+#: ../pybackpack/gui.glade:396 ../pybackpack/seteditor.glade:632
+msgid ""
+"Local File System\n"
+"CD/DVD\n"
+"Remote Host (SSH)"
+msgstr ""
+"File System Locale\n"
+"CD/DVD\n"
+"Host Remoto (SSH)"
+
+#: ../pybackpack/gui.glade:421 ../pybackpack/seteditor.glade:1090
+msgid "Destination:"
+msgstr "Destinazione:"
+
+#: ../pybackpack/gui.glade:475
+msgid "Removable media"
+msgstr "Supporto removibile"
+
+#: ../pybackpack/gui.glade:497 ../pybackpack/seteditor.glade:403
+msgid "local"
+msgstr "locale"
+
+#: ../pybackpack/gui.glade:529 ../pybackpack/seteditor.glade:466
+msgid "cd"
+msgstr "cd"
+
+#: ../pybackpack/gui.glade:548 ../pybackpack/seteditor.glade:485
+msgid "Username:"
+msgstr "Nome Utente:"
+
+#: ../pybackpack/gui.glade:559 ../pybackpack/seteditor.glade:496
+msgid "Host:"
+msgstr "Host:"
+
+#: ../pybackpack/gui.glade:572 ../pybackpack/seteditor.glade:509
+msgid "Path:"
+msgstr "Percorso:"
+
+#: ../pybackpack/gui.glade:658 ../pybackpack/seteditor.glade:600
+msgid "ssh"
+msgstr "ssh"
+
+#: ../pybackpack/gui.glade:679
+msgid "<b>Destination</b>"
+msgstr ""
+
+#: ../pybackpack/gui.glade:698
+msgid "Show details"
+msgstr "Mostra dettagli"
+
+#: ../pybackpack/gui.glade:743
+msgid "_Backup"
+msgstr "_Backup"
+
+#: ../pybackpack/gui.glade:787
+msgid "Backup"
+msgstr "Backup"
+
+#: ../pybackpack/gui.glade:822
+msgid "Local"
+msgstr "Locale"
+
+#: ../pybackpack/gui.glade:838
+msgid "Remote (SSH)"
+msgstr "Remoto (SSH)"
+
+#: ../pybackpack/gui.glade:860
+msgid "Username"
+msgstr "Nome Utente"
+
+#: ../pybackpack/gui.glade:862
+msgid "username"
+msgstr "nome utente"
+
+#: ../pybackpack/gui.glade:876
+msgid "Remote Hostname"
+msgstr "Nome Host Remoto"
+
+#: ../pybackpack/gui.glade:878
+msgid "host"
+msgstr "host"
+
+#: ../pybackpack/gui.glade:894
+msgid "Refresh"
+msgstr "Aggiorna"
+
+#: ../pybackpack/gui.glade:972
+msgid "<b>Location to restore from:</b>"
+msgstr "<b>Percorso dal quale ripristinare:</b>"
+
+#: ../pybackpack/gui.glade:1009
+msgid "Restore as of:"
+msgstr "Ripristina al:"
+
+#: ../pybackpack/gui.glade:1052
+msgid ""
+"Read-only\n"
+"source"
+msgstr ""
+"Sorgente\n"
+"di sola lettura"
+
+#: ../pybackpack/gui.glade:1092 ../pybackpack/seteditor.glade:668
+#: ../pybackpack/seteditor.glade:1038
+msgid "Name:"
+msgstr "Nome:"
+
+#: ../pybackpack/gui.glade:1173
+msgid "_Restore"
+msgstr "_Ripristina"
+
+#: ../pybackpack/gui.glade:1214
+msgid "Restore"
+msgstr "Ripristino"
+
+#: ../pybackpack/seteditor.glade:21
+msgid "New Backup Set"
+msgstr "Nuovo Profilo di Backup"
+
+#: ../pybackpack/seteditor.glade:22
+msgid ""
+"This guide will walk you through the steps\n"
+"needed to create a group of files that are\n"
+"backed up, known as a 'backup set'.\n"
+"\n"
+"Click 'Forward' to begin."
+msgstr ""
+"Questa procedura guidata ti condurrà attraverso i primi passi\n"
+"necessari per impostare l'elenco di file da salvare, \n"
+"chiamato 'profilo di backup'.\n"
+"\n"
+"Clicca 'Avanti' per iniziare."
+
+#: ../pybackpack/seteditor.glade:32
+msgid "Backup Set Name"
+msgstr "Nome del Profilo"
+
+#: ../pybackpack/seteditor.glade:51
+msgid ""
+"Enter a name for the new backup set.\n"
+"e.g. \"e-mail\" for a set containing e-mail messages and settings."
+msgstr ""
+"inserisci il nome per il profilo di backup.\n"
+"per esempio \"e-mail\" per un profilo contenente impostazioni e messaggi di "
+"posta elettronica."
+
+#: ../pybackpack/seteditor.glade:70
+msgid "Enter some descriptive text for this new set."
+msgstr "Inserisci un testo esplicativo per questo nuovo profilo."
+
+#: ../pybackpack/seteditor.glade:95
+msgid ""
+"A set with the name '' already exists.\n"
+"You can either enter a new name in the text box above, or overwrite the "
+"existing set."
+msgstr ""
+"Un profilo con questo nome '' esiste già.\n"
+"Puoi inserire un nuovo nome nel riquadro di testo soprastante, oppure "
+"sovrascrivere il profilo esistente."
+
+#: ../pybackpack/seteditor.glade:108
+msgid "Overwrite existing set"
+msgstr "Sovrascrivi profilo esistente"
+
+#: ../pybackpack/seteditor.glade:126
+msgid "<b>Warning</b>"
+msgstr "<b>Attenzione</b>"
+
+#: ../pybackpack/seteditor.glade:167
+msgid ""
+"You didn't enter a name for this backup set.\n"
+"Please enter a name in the relevant field above and click 'Forward' to "
+"continue."
+msgstr ""
+"Non hai inserito un nome per questo profilo.\n"
+"Inserisci un nome nell'apposito campo soprastante e clicca 'avanti' per "
+"proseguire."
+
+#: ../pybackpack/seteditor.glade:183 ../pybackpack/seteditor.glade:227
+#: ../pybackpack/seteditor.glade:270
+msgid "<b>Error</b>"
+msgstr "<b>Errore</b>"
+
+#: ../pybackpack/seteditor.glade:211
+msgid ""
+"You selected to backup to a remote host, but didn't provide enough "
+"information.\n"
+"Please enter your username, remote host, and the absolute path where the "
+"files should be backed up to."
+msgstr ""
+"Hai selezionato un backup verso un host remoto, ma non hai fornito "
+"sufficienti informazioni.\n"
+"Inserisci nome utente, host remoto, e percorso assoluto della destinazione "
+"di backup."
+
+#: ../pybackpack/seteditor.glade:255
+msgid ""
+"You do not have appropriate permissions to use the CD/DVD burner you have "
+"selected '%s'."
+msgstr ""
+"Non hai permessi sufficienti per utilizzare il masterizzatore CD/DVD "
+"selezionato '%s'."
+
+#: ../pybackpack/seteditor.glade:308
+msgid "Default Destination:"
+msgstr "Destinazione Predefinita:"
+
+#: ../pybackpack/seteditor.glade:335
+msgid ""
+"[Optional]\n"
+"Select a default location for this set to be backed up to."
+msgstr ""
+"[Opzionale]\n"
+"Seleziona il percorso di destinazione predefinito di questo profilo di "
+"backup."
+
+#: ../pybackpack/seteditor.glade:346
+msgid "This is a removable device"
+msgstr "Questa è una periferica removibile"
+
+#: ../pybackpack/seteditor.glade:416
+msgid "Select which CD/DVD Burner to use:"
+msgstr "Seleziona quale masterizzatore CD/DVD usare:"
+
+#: ../pybackpack/seteditor.glade:427
+msgid "CD/DVD Burner:"
+msgstr "Masterizzatori CD/DVD:"
+
+#: ../pybackpack/seteditor.glade:620
+msgid "Destination type:"
+msgstr "Tipo di destinazione:"
+
+#: ../pybackpack/seteditor.glade:658
+msgid ""
+"This new backup set needs to be given a name, and optionally, a description "
+"and a default destination for backups made from this set."
+msgstr ""
+"Questo profilo di backup necessita di un nome, e facoltativamente, di una "
+"descrizione e di una destinazione predefinita."
+
+#: ../pybackpack/seteditor.glade:679
+msgid "Click 'Forward' to continue."
+msgstr "Clicca 'Avanti' per proseguire."
+
+#: ../pybackpack/seteditor.glade:707
+msgid ""
+"To add a file/folder to the backup set, select it in the file chooser and "
+"click 'Add to set'."
+msgstr ""
+"Per aggiungere file/cartelle al profilo,\n"
+"scegli dal selettore di file e clicca su 'Includi nel profilo'."
+
+#: ../pybackpack/seteditor.glade:737
+msgid "Show hidden files"
+msgstr "Mostra file nascosti"
+
+#: ../pybackpack/seteditor.glade:775
+msgid "Exclude from set"
+msgstr "Escludi dal profilo"
+
+#: ../pybackpack/seteditor.glade:824
+msgid "Include in set"
+msgstr "Includi nel profilo"
+
+#: ../pybackpack/seteditor.glade:912
+msgid "Remove from set"
+msgstr "Rimuovi dal profilo"
+
+#: ../pybackpack/seteditor.glade:963
+msgid "Summary"
+msgstr "Elenco"
+
+#: ../pybackpack/seteditor.glade:980
+msgid ""
+"This page gives you an opportunity to review the backup set before it is "
+"saved.\n"
+"To make any changes, click 'Back'."
+msgstr ""
+"Questa pagina consente di verificare il profilo prima di salvarlo.\n"
+"Per effettuare modifiche, clicca 'Indietro'."
+
+#: ../pybackpack/seteditor.glade:1011
+msgid "To proceed and save this backup set, click 'Forward'."
+msgstr "Per procedere e salvare questo profilo di backup, clicca 'Avanti'."
+
+#: ../pybackpack/seteditor.glade:1024
+msgid "Files:"
+msgstr "Files:"
+
+#: ../pybackpack/seteditor.glade:1120
+msgid "Finished!"
+msgstr "Terminato!"
+
+#: ../pybackpack/seteditor.glade:1121
+msgid "You're all done! Congratulations."
+msgstr "Tutto terminato! Congratulazioni."
+
+#: ../pybackpack/statuswindow.glade:8
+msgid "Backup Status Window"
+msgstr "Finestra di stato"
+
+#: ../pybackpack/statuswindow.glade:48
+msgid "<b>Status</b>"
+msgstr "<b>Status</b>"
+
+#~ msgid "Backup Sets"
+#~ msgstr "Profili di Backup"
+
+#~ msgid ""
+#~ "To begin, you need to create a new backup set. Click the 'New' button to "
+#~ "get started."
+#~ msgstr ""
+#~ "Per iniziare bisogna creare un profilo di backup. Clicca il pulsante "
+#~ "'Nuovo' per iniziare."
+
+#~ msgid "To begin, select a backup set from the list on the left."
+#~ msgstr "Per partire, seleziona un profilo di backup dalla lista a sinistra."
+
+#~ msgid "<b>Description</b>"
+#~ msgstr "<b>Descrizione</b>"
+
+#~ msgid "CD/DVD Progress"
+#~ msgstr "Avanzamento CD/DVD"
+
+#~ msgid "<b><big>Writing CD/DVD</big></b>"
+#~ msgstr "<b><big>Scrittura CD/DVD</big></b>"
+
+#~ msgid "<i>Burning data...</i>"
+#~ msgstr "<i>Masterizzazione dati...</i>"
+
+#~ msgid ""
+#~ "No CD burners available, because you do not have the python module "
+#~ "nautilusburn."
+#~ msgstr ""
+#~ "Nessun masterizzazione CD disponibile, in quanto manca il modulo python "
+#~ "nautilusburn."
+
+#~ msgid "No CD burners were detected on your system."
+#~ msgstr "Nessun masterizzatore CD rilevato sul tuo computer."
+
+#~ msgid "Select which CD burner to use:"
+#~ msgstr "Seleziona il masterizzatore CD da usare:"
+
+#~ msgid "Please insert a blank CD into %s"
+#~ msgstr "Inserire un CD vuoto in %s"
+
+#~ msgid "To restore your data, select the folder that contains the backup."
+#~ msgstr ""
+#~ "Per ripristinare i tuoi dati, selezione la cartella contenente il backup."
+
+#~ msgid "very strange"
+#~ msgstr "molto strano"
+
+#~ msgid "Location is:"
+#~ msgstr "Il percorso è:"
+
+#~ msgid "_Quit"
+#~ msgstr "_Esci"
+
+#~ msgid "_About..."
+#~ msgstr "_Informazioni..."
+
+#~ msgid "weird"
+#~ msgstr "strano"
+
+#~ msgid "Show status window"
+#~ msgstr "Mostra finestra di stato"
+
+#~ msgid "_Delete"
+#~ msgstr "_Cancella"
+
+#~ msgid "_Edit..."
+#~ msgstr "_Modifica..."
+
+#~ msgid "Add Files/Folders to ''"
+#~ msgstr "Aggiungi File/Cartelle a ''"
+
+#~ msgid "Starting backup..."
+#~ msgstr "Avvio backup..."
+
+#~ msgid ""
+#~ "No CD burner available, because you don't have the python module "
+#~ "nautilusburn."
+#~ msgstr ""
+#~ "Nessun masterizzazione CD disponibile, in quanto manca il modulo python "
+#~ "nautilusburn."
+
+#~ msgid "There are no CD burners attached to this system."
+#~ msgstr "Non ci sono masterizzatori CD collegati al tuo computer."
+
+#~ msgid "Creating backup..."
+#~ msgstr "Creazione backup..."
+
+#~ msgid "Creating temporary backup in %s"
+#~ msgstr "Creazione backup temporaneo in %s"
+
+#~ msgid ""
+#~ "An error occurred while setting up the temporary CD image directory '%"
+#~ "s'.\n"
+#~ "Please ensure you have write access to this location."
+#~ msgstr ""
+#~ "Errore nella impostazione della cartella temporanea dell'immagine CD '%"
+#~ "s'.\n"
+#~ "Assicurati di avere i permessi di scrittura in quella cartella."
+
+#~ msgid "Ready."
+#~ msgstr "Pronto."
+
+#~ msgid "Backup failed; could not create CD image directory %s\n"
+#~ msgstr ""
+#~ "Backup fallito; non riesco a creare la cartella dell'immagine CD %s\n"
+
+#~ msgid "Backup failed; could not create temporary backup in %s\n"
+#~ msgstr "Backup fallito; non riesco a creare il backup temporaneo in %s\n"
+
+#~ msgid "Backup failed: could not create temporary backup in %s"
+#~ msgstr "Backup fallito; non riesco a creare il backup temporaneo in %s"
+
+#~ msgid "Creating CD image..."
+#~ msgstr "Creazione immagine CD..."
+
+#~ msgid "Creating CD image."
+#~ msgstr "Creazione immagine CD."
+
+#~ msgid "Preparing to burn CD..."
+#~ msgstr "Inizio masterizzazione..."
+
+#~ msgid "Burning CD..."
+#~ msgstr "Masterizzazione CD..."
+
+#~ msgid "Starting to burn CD."
+#~ msgstr "Avvio masterizzazione CD."
+
+#~ msgid "Backup failed; CD burn failed.\n"
+#~ msgstr "Backup fallito; masterizzazione CD fallita.\n"
+
+#~ msgid "Cleaning up temporary files..."
+#~ msgstr "Cancellazione file temporanei..."
+
+#~ msgid "Cleaning up temporary files."
+#~ msgstr "Cancellazione file temporanei."
+
+#~ msgid "Backup finished."
+#~ msgstr "Backup terminato."
+
+#~ msgid "Backup completed successfully.\n"
+#~ msgstr "Backup ultimato con successo.\n"
+
+#~ msgid "Backup completed successfully."
+#~ msgstr "Backup ultimato con successo."
+
+#~ msgid ""
+#~ "An error occurred while trying to create '%s'.\n"
+#~ "Please select a different backup destination."
+#~ msgstr ""
+#~ "Errore nella creazione di '%s'.\n"
+#~ "Selezione una destinazione diversa."
+
+#~ msgid "Backup failed; couldn't write to '%s'.\n"
+#~ msgstr "Backup fallito; non riesco a scrivere in '%s'.\n"
+
+#~ msgid ""
+#~ "There are already files in the backup destination you have chosen, '%s'.\n"
+#~ "If you backup to this location, these files will be erased permanently.\n"
+#~ "\n"
+#~ "Are you sure you want to do this?"
+#~ msgstr ""
+#~ "La destinazione che hai scelto '%s' contiene già dei file.\n"
+#~ "Usando questa destinazione, il contenuto sarà cancellato "
+#~ "definitivamente.\n"
+#~ "\n"
+#~ "Sei sicuro di voler proseguire?"
+
+#~ msgid ""
+#~ "You don't have permission to write to '%s'.\n"
+#~ "Please select a different backup destination."
+#~ msgstr ""
+#~ "Non possiedi i permessi per scrivere su '%s'.\n"
+#~ "Seleziona un'altra destinazione."
+
+#~ msgid "Backup failed; no permission to write to '%s'.\n"
+#~ msgstr "Backup fallito; non hai i permessi per scrivere su '%s'.\n"
+
+#~ msgid ""
+#~ "Cannot backup into your home directory; this would delete everything in "
+#~ "it.\n"
+#~ "Please select a different location."
+#~ msgstr ""
+#~ "Non puoi effettuare il backup nella tua cartella home; cancelleresti "
+#~ "tutto il contenuto\n"
+#~ "Seleziona un'altra destinazione."
+
+#~ msgid "Backup failed (Bad destination).\n"
+#~ msgstr "Backup fallito (Bad destination).\n"
+
+#~ msgid "Running rdiff-backup"
+#~ msgstr "Eseguo rdiff-backup"
+
+#~ msgid "Backup to %s failed (rdiff-backup failed).\n"
+#~ msgstr "Backup in %s fallito (errore rdiff-backup).\n"
+
+#~ msgid ""
+#~ "You did not enter enough information. Please check the following fields:%s"
+#~ msgstr ""
+#~ "Non hai introdotto abbastanza informazioni. Controlla i seguenti campi:%s"
+
+#~ msgid "Running rdiff-backup."
+#~ msgstr "Eseguo rdiff-backup."
+
+#~ msgid "Backing up to %s"
+#~ msgstr "Backup in %s"
+
+#~ msgid ""
+#~ "File backup to the remote host completed, but an error occurred whilst "
+#~ "copying the %(appname)s backup set data file. All is not lost - you can "
+#~ "manually copy this file from\n"
+#~ "%(filesource)s\n"
+#~ " to\n"
+#~ "%(filepath)s (on host %(hostname)s)"
+#~ msgstr ""
+#~ "Backup verso host remoto ultimato, ma si è verificato un errore mentre "
+#~ "copiavo il file di dati del profilo %(appname)s. Puoi sempre rimediare "
+#~ "copiando manualmente questo file da\n"
+#~ "%(filesource)s\n"
+#~ " a\n"
+#~ "%(filepath)s (su host %(hostname)s)"
+
+#~ msgid ""
+#~ "Copying data file failed, please copy %(filesource)s to %(filepath)s (on "
+#~ "remote host %(hostname)s) manually."
+#~ msgstr ""
+#~ "La copia del file dati è fallita, copia manualmente %(filesource)s in %"
+#~ "(filepath)s (su host remoto %(hostname)s)."
+
+#~ msgid "An error occurred whilst backing up '%s'."
+#~ msgstr "Errore copiando '%s'."
+
+#~ msgid ""
+#~ "Backup failed (rdiff-backup failed)\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Backup fallito (errore rdiff-backup)\n"
+#~ "%s"
+
+#~ msgid "Analysing backup source..."
+#~ msgstr "Analizzo sorgente..."
+
+#~ msgid "Analysing backup source."
+#~ msgstr "Analizzo sorgente."
+
+#~ msgid "Missing"
+#~ msgstr "Mancante"
+
+#~ msgid "NOTE: Destination directory in backup set. Omitting."
+#~ msgstr "NOTA: Destinazione del backup all'interno della sorgente. Omesso."
+
+#~ msgid "File"
+#~ msgstr "File"
+
+#~ msgid "Directory"
+#~ msgstr "Cartella"
+
+#~ msgid "Permissions/file missing problems on certain files:"
+#~ msgstr "Non riesco ad accedere ad alcuni file:"
+
+#~ msgid ""
+#~ "Some files in the backup set are not readable by you and will not be "
+#~ "backed up.\n"
+#~ "See the status window for details.\n"
+#~ "Continue backup?"
+#~ msgstr ""
+#~ "Alcuni file del profilo non sono leggibili e non saranno copiati\n"
+#~ "Guarda la finestra di stato per i dettagli.\n"
+#~ "Proseguo con il backup?"
+
+#~ msgid "Copying from CD - current file:"
+#~ msgstr "Copia da CD - file corrente:"
+
+#~ msgid "Waiting for CD..."
+#~ msgstr "In attesa del CD..."
+
+#~ msgid "Finished."
+#~ msgstr "Terminato."
+
+#~ msgid "Creating backup... (Approx %d%% done)"
+#~ msgstr "Creazione backup... (Fatto circa %d%%)"
+
+#~ msgid "Please e-mail the contents of this text box to:"
+#~ msgstr "Manda via e-mail il contenuto di questo modulo di testo a:"
+
+#~ msgid "Select a default location to backup to"
+#~ msgstr "Seleziona una destinazione di backup predefinita"
