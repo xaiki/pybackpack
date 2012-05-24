@@ -1,4 +1,5 @@
-import gtk
+from gi.repository import Gtk
+
 import os
 
 class FileChooser:
@@ -19,16 +20,17 @@ class FileChooser:
 
         self.exitnotify = None
         try:
-            self.widgets = gtk.glade.XML("%s/filechooser.glade"
-                            % os.path.dirname(__file__))
+            self.builder = Gtk.Builder()
+            self.builder.add_from_file(os.path.realpath(os.path.dirname(__file__) + "filechooser.ui"))
         except RuntimeError:
-            dlg = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR,
-                    gtk.BUTTONS_CLOSE,_("Unable to initialise filechooser"))
-            dlg.connect("response", lambda w: gtk.main_quit())
+            dlg = Gtk.MessageDialog(None,  Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
+                                    Gtk.ButtonsType.CLOSE,
+                                    _("Unable to initialise filechooser"))
+            dlg.connect("response", lambda w: Gtk.main_quit())
 
-        self.widgets.signal_autoconnect(self)
-        self.dialog = self.widgets.get_widget('filechooserdialog1')
-        self.dialog.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+        self.builder.connect_signals(self)
+        self.dialog = self.builder.get_object("filechooserdialog1")
+        self.dialog.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         self.title = ""
 
     def set_return_type(self, type):
@@ -93,3 +95,15 @@ class FileChooser:
            Hides the file chooser dialog."""
 
         self.dialog.hide()
+
+if __name__ == "__main__":
+    def _(m):
+        return m
+
+    from gi.repository import GLib
+
+    f = FileChooser()
+    f.show()
+
+    GLib.timeout_add_seconds(2, lambda x: Gtk.main_quit(), None)
+    Gtk.main()
