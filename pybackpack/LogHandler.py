@@ -1,4 +1,4 @@
-import gtk
+from gi.repository import Gtk
 import sys
 import os
 
@@ -25,13 +25,13 @@ class LogHandler:
 				self.currentfile += 1
 				p = self.currentfile / self.filecount
 				self.widgets.get_widget('progressbar1').set_fraction(p)
-			while gtk.events_pending():
-				gtk.main_iteration()
+			while Gtk.events_pending():
+				Gtk.main_iteration()
 		self.text += text
 		if self.haswidget and not self.quiet:
 			self.output_buffer.insert(self.output_buffer.get_end_iter(), text)
-			while gtk.events_pending():
-				gtk.main_iteration()
+			while Gtk.events_pending():
+				Gtk.main_iteration()
 
 	def get_contents(self):
 		return self.text

@@ -13,8 +13,8 @@ class StatusWindow:
         """Set up a new status window."""
         try:
             self.builder = Gtk.Builder()
-            self.builder.add_from_file("%s/statuswindow.ui",
-                                       os.path.realpath(os.path.dirname(__file__)))
+            self.builder.add_from_file("%s/statuswindow.ui"
+                                       %(os.path.realpath(os.path.dirname(__file__))))
         except RuntimeError:
             dlg = Gtk.MessageDialog(None,  Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
                                     Gtk.ButtonsType.CLOSE,

@@ -22,9 +22,11 @@ class SetEditor:
     def __init__(self, bupsets):
         self.exitnotify = None
         self.backupsets = bupsets
+        self.includes = {}
+        self.excludes = {}
         try:
             self.builder = Gtk.Builder()
-            self.builder.add_from_file(os.path.realpath(os.path.dirname(__file__) + "seteditor.ui"))
+            self.builder.add_from_file("mdt.ui")
         except RuntimeError:
             dlg = Gtk.MessageDialog(None,  Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
                                     Gtk.ButtonsType.CLOSE,
@@ -34,9 +36,9 @@ class SetEditor:
         # Connect signals to handler functions
         self.builder.connect_signals(self)
         self.filelist = Gtk.ListStore(GdkPixbuf.Pixbuf, GdkPixbuf.Pixbuf, gobject.TYPE_STRING, bool)
-
-        self.builder.get_object('treeview_druidfilelist').set_model(self.filelist)
-        self.builder.get_object('druid_summary_filelist').set_model(self.filelist)
+        self.builder.get_object('treeview_excluded').set_model(self.filelist)
+        self.builder.get_object('treeview_excluded1').set_model(self.filelist)
+        self.builder.get_object('treeview_summary').set_model(self.filelist)
 
         self.dialogs = dialogs.Dialogs(self.builder.get_object('window_new_set'))
 
@@ -46,19 +48,22 @@ class SetEditor:
         #              include(True)/exclude(False)
 
         # Add the Path column to the treeview
-        self.builder.get_object('treeview_druidfilelist').append_column(self._new_column())
-        self.builder.get_object('druid_summary_filelist').append_column(self._new_column())
+        self.builder.get_object('treeview_excluded').append_column(self._new_column())
+        self.builder.get_object('treeview_excluded1').append_column(self._new_column())
+        self.builder.get_object('treeview_summary').append_column(self._new_column())
+
+        self.builder.get_object('comboboxtext1').set_active(2)
 
         self.builder.get_object('filechooserwidget1').set_current_folder(os.environ['HOME'])
 #        self.builder.get_object('cmb_dst_type').set_active(0)
-        self.builder.get_object('notebook').set_current_page(0)
+#        self.builder.get_object('notebook').set_current_page(0)
 
         self.drive_sel = None
         self.find_cd_burners()
 
     def _new_column(self):
         column = Gtk.TreeViewColumn()
-        column.set_title(_("Path"))
+#        column.set_title(_("Path"))
         column.set_spacing(3)
         renderer = Gtk.CellRendererPixbuf()
         column.pack_start(renderer, expand=False)
@@ -77,8 +82,16 @@ class SetEditor:
 
         self.exitnotify = func
 
+    def mdt_show_prefs_cb (self, widget=None, event=None):
+        self.builder.get_object('mdt_prefs').show()
+
+    def mdt_show_file_chooser_cb (self, widget=None, event=None):
+        self.builder.get_object('filechooserwidget1').show()
+
     def show(self):
-        self.builder.get_object('druid_page_2').show()
+        self.builder.get_object('mdt_main').show()
+#        self.builder.get_object('mdt_prefs').show()
+#        self.builder.get_object('druid_page_2').show()
 #        self.builder.get_object('druid_page_start').show()
 #        self.builder.get_object('druid_page_finish').show()
 #        self.builder.get_object('window_new_set').show()
@@ -128,7 +141,7 @@ class SetEditor:
                 False otherwise
         """
 
-        druidfilelist = self.builder.get_object('treeview_druidfilelist')
+        druidfilelist = self.builder.get_object('treeview_excluded')
         if buset is not None:
             if buset.name == _('home'):
                 return False
@@ -305,13 +318,8 @@ class SetEditor:
         buset.desc = self.builder.get_object('druid_summary_desc').get_text()
         buset.dest = self.builder.get_object('druid_summary_dest').get_text()
         buset.removable = self.builder.get_object('chk_removable_device').get_active()
-        buset.files_include = []
-        buset.files_exclude = []
-        for f in self.filelist:
-            if f[3]:
-                buset.files_include.append(f[2])
-            else:
-                buset.files_exclude.append(f[2])
+        buset.files_include = self.includes
+        buset.files_exclude = self.excludes
         try:
             buset.write()
             if buset not in self.backupsets:
@@ -324,40 +332,74 @@ class SetEditor:
                 _("ERROR: Couldn't write new set %(name)s: %(error)s") %
                 {'name':self.builder.get_object('entry_new_set_name').get_text(), 'error':e})
 
-    def on_button_add_to_set_clicked(self, widget):
-        for f in self.builder.get_object('filechooserwidget1').get_filenames():
-            if os.path.isdir(f):
-                self.filelist.append([widget.render_icon(Gtk.STOCK_ADD, Gtk.IconSize.MENU, "TreeView"),
-                                      widget.render_icon(Gtk.STOCK_DIRECTORY, Gtk.IconSize.MENU, "TreeView"),
-                                      f, True])
-            else:
-                self.filelist.append([widget.render_icon(Gtk.STOCK_ADD, Gtk.IconSize.MENU, "TreeView"),
-                                      widget.render_icon(Gtk.STOCK_FILE, Gtk.IconSize.MENU, "TreeView"),
-                                      f, True])
+#    def filechooser_done_cb(self, widget):
+#        self.builder.get_object('filechooserwidget1').hide()
+
+    def prefs_done_cb(self, widget):
+#        self.builder.get_object('filechooserwidget1').hidea()
+        self.builder.get_object('mdt_prefs').hide()
+
+    def filelist_remove (self, f):
+        for p in self.filelist:
+            if p[2] == f:
+                i = self.filelist.iter_nth_child
+                self.filelist.remove(p.iter)
+                if self.excludes.has_key(f):
+                    del self.excludes[f]
+                elif self.includes.has_key(f):
+                    del self.includes[f]
+                return True
+        return False
+
+    def filelist_push (self, f, inc=True):
+        widget = Gtk.Image()
+        icon = []
+
+        if os.path.isdir(f):
+            icon.append(Gtk.STOCK_DIRECTORY)
+        else:
+            icon.append(Gtk.STOCK_FILE)
+
+        if inc == True:
+            if f in self.includes:
+                return
+            if f in self.excludes:
+                self.filelist_remove (f)
+            self.includes[f] = True
+            icon.append(Gtk.STOCK_ADD)
+        else:
+            if f in self.excludes:
+                return
+            if f in self.includes:
+                self.filelist_remove (f)
+            self.excludes[f] = True
+            icon.append(Gtk.STOCK_REMOVE)
+
+        self.filelist.append([widget.render_icon(icon.pop(), Gtk.IconSize.LARGE_TOOLBAR, "TreeView"),
+                              widget.render_icon(icon.pop(), Gtk.IconSize.DIALOG, "TreeView"),
+                              f, True])
+
+    def filelist_refresh_count (self):
         if len(self.filelist) == 1:
             self.builder.get_object('druidfilelist_label').set_text(_("1 item"))
         else:
             self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(self.filelist))
-        self.builder.get_object('filechooserwidget1').unselect_all()
+
+    def on_button_add_to_set_clicked(self, widget):
+        for f in self.builder.get_object('filechooserwidget1').get_filenames():
+            self.filelist_push (f, inc=True)
+        self.filelist_refresh_count ()
+#        self.builder.get_object('filechooserwidget1').unselect_all()
 
     def on_button_exc_from_set_clicked(self, widget):
         for f in self.builder.get_object('filechooserwidget1').get_filenames():
-            if os.path.isdir(f):
-                self.filelist.append([widget.render_icon(Gtk.STOCK_REMOVE, Gtk.IconSize.MENU, "TreeView"),
-                                      widget.render_icon(Gtk.STOCK_DIRECTORY, Gtk.IconSize.MENU, "TreeView"),
-                                      f, False])
-            else:
-                self.filelist.append([widget.render_icon(Gtk.STOCK_REMOVE, Gtk.IconSize.MENU, "TreeView"),
-                                      widget.render_icon(Gtk.STOCK_FILE, Gtk.IconSize.MENU, "TreeView"),
-                                      f, False])
-        if len(self.filelist) == 1:
-            self.builder.get_object('druidfilelist_label').set_text(_("1 item"))
-        else:
-            self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(self.filelist))
-        self.builder.get_object('filechooserwidget1').unselect_all()
+            self.filelist_push (f, inc=False)
+        self.filelist_refresh_count ()
+
+#        self.builder.get_object('filechooserwidget1').unselect_all()
 
     def on_button_remove_from_set_clicked(self, widget):
-        selection = self.builder.get_object('treeview_druidfilelist').get_selection()
+        selection = self.builder.get_object('treeview_excluded').get_selection()
         store, row = selection.get_selected()
         if row is not None:
             store.remove(row)
@@ -365,6 +407,10 @@ class SetEditor:
                 self.builder.get_object('druidfilelist_label').set_text(_("1 item"))
             else:
                 self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(self.filelist))
+        else: # this is really hackish, how can we get a better behaviour ?
+            for f in self.builder.get_object('filechooserwidget1').get_filenames():
+                self.filelist_remove(f)
+
 
     def find_cd_burners(self):
 
@@ -388,10 +434,9 @@ if __name__ == "__main__":
     def _(m):
         return m
 
-    from gi.repository import GLib
     s = SetEditor(backupsets.BackupSets(''))
 
+    s.builder.get_object('mdt_main').connect ("destroy", lambda w: Gtk.main_quit())
     s.show()
 
-    GLib.timeout_add_seconds(10, lambda x: Gtk.main_quit(), None)
     Gtk.main()
