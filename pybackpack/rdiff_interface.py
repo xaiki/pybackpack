@@ -1,9 +1,9 @@
+from gi.repository import Gtk
+
 import rdiff_backup.Main
 import os
 import sys
 import shutil
-import gtk
-import gobject
 import time
 import subprocess
 
@@ -55,7 +55,7 @@ def ParseRestoreSrc(path):
 		ret = {}
 		for key, val in cp.items('Set'):
 			ret[key] = val
-		ret['increments'] = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+		ret['increments'] = Gtk.ListStore(str , str )
 		log = LogHandler()
 		sys.stdout = log
 		args = ['--list-increments', '--parsable-output', '--terminal-verbosity', '0', path.replace("rdiff-backup-data", "")]
@@ -99,14 +99,14 @@ def ParseRestoreSSHSrc(user, host, path):
 		'/tmp/%s.ssh.set' % version.APPPATH]
 	scp = subprocess.Popen(args, shell=False)
 	while scp.poll() is None:
-		gtk.main_iteration()
+		Gtk.main_iteration()
 	cp = SafeConfigParser()
 	if cp.read('/tmp/%s.ssh.set' % version.APPPATH) == []:
 		return None
 	ret = {}
 	for key, val in cp.items('Set'):
 		ret[key] = val
-	ret['increments'] = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+	ret['increments'] = Gtk.ListStore(str , str )
 	log = LogHandler()
 	sys.stdout = log
 	sshpath = "%s@%s::%s" % (user, host, path)

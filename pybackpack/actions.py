@@ -1,13 +1,14 @@
+from gi.repository import Gtk
+from gi.repository import Gdk
+
 import os
 import sys
-import gtk
 import shutil
 import mkisofs
 import version
 import traceback
 import subprocess
 import rdiff_interface
-import gobject
 from LogHandler import LogHandler
 try:
 	import braseroburn
@@ -210,7 +211,7 @@ class CDBackup(Backup):
 		self.destination = os.path.join(tmpdir, "%s.cdimage" %
 				version.APPPATH)
 		self.isopath = os.path.join(tmpdir, "%s.iso" % version.APPPATH)
-		gobject.threads_init()
+		Gdk.threads_init()
 
 	def check_destination(self):
 		"""
@@ -262,7 +263,7 @@ class CDBackup(Backup):
 		options = braseroburn.BurnOptions(session)
 		err = options.run()
 		options.destroy()
-		if err != gtk.RESPONSE_OK:
+		if err != Gtk.ResponseType.OK:
 			self.progress = 0
 			self.report_progress("")
 			raise BackupError(_("An error occurred while burning the CD."))
