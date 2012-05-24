@@ -31,11 +31,11 @@ class Gui:
                     path += "/"
 
                 self.builder = Gtk.Builder()
-                builder.add_from_file(path + "gui.ui")
+                self.builder.add_from_file(path + "gui.ui")
 
 		self.win_main = self.builder.get_object("window_main")
 
-		self.widgets.signal_autoconnect(self)
+		self.builder.connect_signals(self)
 		self.builder.get_object('set_destination').set_model(
 		    Gtk.ListStore(GObject.TYPE_STRING))
 		self.builder.get_object('restore_src').set_model(Gtk.ListStore(GObject.TYPE_STRING))
@@ -755,7 +755,7 @@ class Gui:
 			else:
 				set_type = Gtk.STOCK_DIRECTORY
 			self.setstore.append( [combo.render_icon(set_type,
-				Gtk.ICON_SIZE_MENU), bset.name, bset])
+				Gtk.IconSize.MENU), bset.name, bset])
 		if selected is not None:
 			self.select_set(selected.name)
 		else:

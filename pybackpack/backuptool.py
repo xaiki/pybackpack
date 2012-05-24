@@ -10,8 +10,8 @@ try:
 except:
 	localedir = "/usr/share/locale"
 gettext.install(gtdomain, localedir, unicode=True)
-bindtextdomain(gtdomain, localedir)
-textdomain(gtdomain)
+gettext.bindtextdomain(gtdomain, localedir)
+gettext.textdomain(gtdomain)
 
 import version
 import backupsets

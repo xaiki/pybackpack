@@ -171,7 +171,7 @@ class Backup:
 		"""
 		filecount = self.__analyze_source(backupset, ui)
 		self.report_progress(_("Running backup"))
-		stdout = LogHandler(ui.statuswin, ui.widgets, filecount, True)
+		stdout = LogHandler(ui.statuswin, ui.builder, filecount, True)
 		stderr = LogHandler(ui.statuswin)
 		self.progress = 0
 		self.report_progress(_("Creating backup"))
