@@ -1,4 +1,3 @@
-import gtk
 import os
 import stat
 from shutil import copy2

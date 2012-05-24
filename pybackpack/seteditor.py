@@ -19,9 +19,14 @@ class SetEditor:
         self.backupsets = bupsets
         self.includes = {}
         self.excludes = {}
+
+        path = os.path.dirname(__file__)
+        if path:
+            path += "/"
+
         try:
             self.builder = Gtk.Builder()
-            self.builder.add_from_file("mdt.ui")
+            self.builder.add_from_file(path + "mdt.ui")
         except RuntimeError:
             dlg = Gtk.MessageDialog(None,  Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
                                     Gtk.ButtonsType.CLOSE,

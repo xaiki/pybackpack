@@ -1,8 +1,7 @@
+from gi.repository import Gtk
+
 import os
 import sys
-import gtk
-import gtk.glade
-import gobject
 import gettext
 
 gtdomain = "pybackpack"
@@ -11,8 +10,8 @@ try:
 except:
 	localedir = "/usr/share/locale"
 gettext.install(gtdomain, localedir, unicode=True)
-gtk.glade.bindtextdomain(gtdomain, localedir)
-gtk.glade.textdomain(gtdomain)
+bindtextdomain(gtdomain, localedir)
+textdomain(gtdomain)
 
 import version
 import backupsets
@@ -56,7 +55,7 @@ class BackupTool:
         except IOError:
             pass #if the file doesn't exist, don't panic!
 
-        gtk.main()
+        Gtk.main()
 
 def StartUp():
     BackupTool()
