@@ -1,6 +1,7 @@
 from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 
 import sys
@@ -116,7 +117,7 @@ class Gui:
 						'backup_ssh_host', \
 						'backup_ssh_path']:
 			self.builder.get_object(widget).set_text('')
-		self.builder.get_object('set_destination').child.set_text('')
+		self.builder.get_object('set_destination').get_child().set_text('')
 		if selected.dest[:7] == "sftp://":
 			p = re.compile("sftp://([^@]+)@([^/]+)(.*)")
 			matches = p.match(selected.dest)
@@ -146,7 +147,7 @@ class Gui:
 			else:
 				self.builder.get_object('backup_removable').set_active(False)
 			self.builder.get_object('cmb_backup_type').set_active(0)
-			self.builder.get_object('set_destination').child.set_text(selected.dest)
+			self.builder.get_object('set_destination').get_child().set_text(selected.dest)
 		self.builder.get_object('frame_dest').set_sensitive(True)
 		self.builder.get_object('button_delete_set').set_sensitive(True)
 
@@ -184,7 +185,7 @@ class Gui:
 			widget.destroy()
 
 	def on_set_destination_changed(self, widget):
-		if len(widget.child.get_text()) > 0:
+		if len(widget.get_child().get_text()) > 0:
 			self.builder.get_object('button_do_backup').set_sensitive(True)
 		else:
 			self.builder.get_object('button_do_backup').set_sensitive(False)
@@ -207,7 +208,7 @@ class Gui:
 			self.statuswin.show()
 		self.builder.get_object('notebook1').set_sensitive(False)
 		self.builder.get_object('menubar1').set_sensitive(False)
-		self.win_main.window.set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
+		self.win_main.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
 		while Gtk.events_pending():
 			Gtk.main_iteration()
 		try:
@@ -220,7 +221,7 @@ class Gui:
 		finally:
 			self.builder.get_object('notebook1').set_sensitive(True)
 			self.builder.get_object('menubar1').set_sensitive(True)
-			self.win_main.window.set_cursor(None)
+			self.win_main.get_window().set_cursor(None)
 
 	def show_progress(self, progress=0, status=None, unused=None):
 		if status is not None:
@@ -330,7 +331,7 @@ class Gui:
 		Backup files to a local storage device.
 		"""
 		destcombo = self.builder.get_object('set_destination')
-		destination_path = destcombo.child.get_text()
+		destination_path = destcombo.get_child().get_text()
 
 		active = self.builder.get_object('combo_backup_sets').get_active()
 		bset = self.setstore[active][2]
@@ -380,11 +381,11 @@ class Gui:
 
 		gotit = False
 		for path in destcombo.get_model():
-			if path[0] == destcombo.child.get_text():
+			if path[0] == destcombo.get_child().get_text():
 				gotit = True
 				break
 		if not gotit:
-			destcombo.get_model().append((destcombo.child.get_text(),))
+			destcombo.get_model().append((destcombo.get_child().get_text(),))
 
 		self.__unlock()
 
@@ -431,7 +432,7 @@ class Gui:
 		filechooser.show()
 
 	def filechosen_backup_dst(self, filename):
-		self.builder.get_object('set_destination').child.set_text(filename)
+		self.builder.get_object('set_destination').get_child().set_text(filename)
 
 	def on_cmb_backup_type_changed(self, widget):
 		try:
@@ -471,7 +472,7 @@ class Gui:
 		filechooser.show()
 
 	def filechosen_restore_src(self, uri):
-		self.builder.get_object('restore_src').child.set_text("")
+		self.builder.get_object('restore_src').get_child().set_text("")
 		if uri[:7] == "sftp://":
 			p = re.compile("sftp://([^@]+)@([^/]+)(.*)")
 			matches = p.match(uri)
@@ -484,12 +485,12 @@ class Gui:
 				host = matches.group(2)
 				path = matches.group(3)
 			self.builder.get_object('radio_restore_ssh').set_active(True)
-			self.builder.get_object('restore_src').child.set_text(path)
+			self.builder.get_object('restore_src').get_child().set_text(path)
 			self.builder.get_object('restore_ssh_user').set_text(user)
 			self.builder.get_object('restore_ssh_host').set_text(host)
 		elif uri[:7] == "file://":
 			self.builder.get_object('radio_restore_local').set_active(True)
-			self.builder.get_object('restore_src').child.set_text(uri[7:])
+			self.builder.get_object('restore_src').get_child().set_text(uri[7:])
 			self.builder.get_object('restore_ssh_user').set_text("username")
 			self.builder.get_object('restore_ssh_host').set_text("host")
 		else:
@@ -504,8 +505,8 @@ class Gui:
 			self.builder.get_object('button_do_restore').set_sensitive(False)
 			self.builder.get_object('cmb_restore_increment').get_model().clear()
 			return True
-		widget.child.set_text(widget.child.get_text().replace("/rdiff-backup-data", ""))
-		bset = rdiff_interface.ParseRestoreSrc(widget.child.get_text())
+		widget.get_child().set_text(widget.get_child().get_text().replace("/rdiff-backup-data", ""))
+		bset = rdiff_interface.ParseRestoreSrc(widget.get_child().get_text())
 		if bset is not None:
 			self.builder.get_object('button_do_restore').set_sensitive(True)
 			self.builder.get_object('lbl_restore_target').set_text(_("This data will be restored to %s") % os.path.join(os.environ['HOME'], "restored_files", bset['name']))
@@ -534,10 +535,10 @@ class Gui:
 		if ssh_restore:
 			user = self.builder.get_object('restore_ssh_user').get_text()
 			host = self.builder.get_object('restore_ssh_host').get_text()
-			path = self.builder.get_object('restore_src').child.get_text()
+			path = self.builder.get_object('restore_src').get_child().get_text()
 			restore_source = "%s@%s::%s" % (user, host, path)
 		else:
-			restore_source = self.builder.get_object('restore_src').child.get_text()
+			restore_source = self.builder.get_object('restore_src').get_child().get_text()
 		self.statuswin.addmsg(_("Starting restore operation from '%s'\n") % restore_source)
 		self.show_progress(0, _("Starting restore operation..."))
 		if self.builder.get_object('chk_rst_show_output_log').get_active():
@@ -626,11 +627,11 @@ class Gui:
 			if not ssh_restore:
 				gotit = False
 				for path in self.builder.get_object('restore_src').get_model():
-					if path[0] == self.builder.get_object('restore_src').child.get_text():
+					if path[0] == self.builder.get_object('restore_src').get_child().get_text():
 						gotit = True
 						break
 				if not gotit:
-					self.builder.get_object('restore_src').get_model().append((self.builder.get_object('restore_src').child.get_text(),))
+					self.builder.get_object('restore_src').get_model().append((self.builder.get_object('restore_src').get_child().get_text(),))
 		self.builder.get_object('button_do_restore').set_sensitive(True)
 		self.builder.get_object('menu_backup').set_sensitive(True)
 		self.builder.get_object('menu_restore').set_sensitive(True)
@@ -648,7 +649,7 @@ class Gui:
 	def on_restore_ssh_refresh_clicked(self, unused):
 		user = self.builder.get_object('restore_ssh_user').get_text()
 		host = self.builder.get_object('restore_ssh_host').get_text()
-		path = self.builder.get_object('restore_src').child.get_text()
+		path = self.builder.get_object('restore_src').get_child().get_text()
 		bset = rdiff_interface.ParseRestoreSSHSrc(user, host, path)
 		if bset is not None:
 			self.builder.get_object('button_do_restore').set_sensitive(True)
