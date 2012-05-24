@@ -1,13 +1,14 @@
+from gi.repository import Gtk
+from gi.repository import Gdk
+
 import os
 import sys
-import gtk
 import shutil
 import mkisofs
 import version
 import traceback
 import subprocess
 import rdiff_interface
-import gobject
 from LogHandler import LogHandler
 try:
 	import braseroburn
@@ -45,7 +46,7 @@ class DestinationError(Exception):
 		else:
 			self.message = "%s: %s (%s)" % (self.msgs[code], path, msg)
 		self.code = code
-	
+
 	def __str__(self):
 		return self.message
 
@@ -85,7 +86,7 @@ class Backup:
 		If data is provided, it will be passed to the handler.
 		"""
 		self.progress_cbs.append((progress_cb,data))
-	
+
 	def report_progress(self, status):
 		"""
 		Report progress percentage to the progress callbacks.
@@ -93,7 +94,7 @@ class Backup:
 		for cb, data in self.progress_cbs:
 			if callable(cb):
 				cb(self.progress, status, data)
-	
+
 	def check_destination(self):
 		"""
 		Check the destination directory is OK to back up to.
@@ -210,7 +211,7 @@ class CDBackup(Backup):
 		self.destination = os.path.join(tmpdir, "%s.cdimage" %
 				version.APPPATH)
 		self.isopath = os.path.join(tmpdir, "%s.iso" % version.APPPATH)
-		gobject.threads_init()
+		Gdk.threads_init()
 
 	def check_destination(self):
 		"""
@@ -222,7 +223,7 @@ class CDBackup(Backup):
 			pass # Didn't exist in the first place
 
 		Backup.check_destination(self)
-	
+
 	def show_iso_progress(self, progress):
 		"""
 		Helper function for reporting iso image creation progress.
@@ -245,7 +246,7 @@ class CDBackup(Backup):
 			msg = _("Backup failed; could not create CD image %(filename)s: %(error)s\n") %\
 					{'filename':self.isopath, 'error':errmsg}
 			raise BackupError(msg)
-	
+
 	def burn_iso(self, drive, cd_progress_cb):
 		"""
 		Burn the iso image to CD/DVD.
@@ -262,11 +263,11 @@ class CDBackup(Backup):
 		options = braseroburn.BurnOptions(session)
 		err = options.run()
 		options.destroy()
-		if err != gtk.RESPONSE_OK:
+		if err != Gtk.ResponseType.OK:
 			self.progress = 0
 			self.report_progress("")
 			raise BackupError(_("An error occurred while burning the CD."))
-			
+
 		cdburner = braseroburn.BurnDialog()
 		cdburner.show()
 		if not cdburner.run(session):
@@ -276,7 +277,7 @@ class CDBackup(Backup):
 			raise BackupError(_("An error occurred while burning the CD."))
 
 		cdburner.destroy()
-		
+
 		self.report_progress(_("Cleaning up temporary files"))
 		try:
 			shutil.rmtree(dest_path)
@@ -340,4 +341,3 @@ _("Backup completed, but could not copy the backup set data file. You can "
 			raise BackupError(
 				_("An error occurred while transferring '%s'.") %\
 				inifile)
-

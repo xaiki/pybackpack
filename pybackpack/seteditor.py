@@ -1,14 +1,9 @@
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 
-import gi.pygtkcompat
-
-gi.pygtkcompat.enable()
-gi.pygtkcompat.enable_gtk(version='3.0')
-
 import os
 import re
-import gobject
+
 try:
         import braseromedia
 except ImportError:
@@ -35,7 +30,7 @@ class SetEditor:
 
         # Connect signals to handler functions
         self.builder.connect_signals(self)
-        self.filelist = Gtk.ListStore(GdkPixbuf.Pixbuf, GdkPixbuf.Pixbuf, gobject.TYPE_STRING, bool)
+        self.filelist = Gtk.ListStore(GdkPixbuf.Pixbuf, GdkPixbuf.Pixbuf, str , bool)
         self.builder.get_object('treeview_excluded').set_model(self.filelist)
         self.builder.get_object('treeview_excluded1').set_model(self.filelist)
         self.builder.get_object('treeview_summary').set_model(self.filelist)
