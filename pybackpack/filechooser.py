@@ -18,10 +18,14 @@ class FileChooser:
         self.RETURN_URI = 0
         self.RETURN_FILENAME = 1
 
+        path = os.path.dirname(__file__)
+        if path:
+            path += "/"
+
         self.exitnotify = None
         try:
             self.builder = Gtk.Builder()
-            self.builder.add_from_file(os.path.realpath(os.path.dirname(__file__) + "filechooser.ui"))
+            self.builder.add_from_file(path + "filechooser.ui")
         except RuntimeError:
             dlg = Gtk.MessageDialog(None,  Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
                                     Gtk.ButtonsType.CLOSE,
