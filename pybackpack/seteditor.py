@@ -37,7 +37,6 @@ class SetEditor:
         self.builder.connect_signals(self)
         self.filelist = Gtk.ListStore(GdkPixbuf.Pixbuf, GdkPixbuf.Pixbuf, str , bool)
         self.builder.get_object('treeview_excluded').set_model(self.filelist)
-        self.builder.get_object('treeview_excluded1').set_model(self.filelist)
         self.builder.get_object('treeview_summary').set_model(self.filelist)
 
         self.dialogs = dialogs.Dialogs(self.builder.get_object('window_new_set'))
@@ -49,7 +48,6 @@ class SetEditor:
 
         # Add the Path column to the treeview
         self.builder.get_object('treeview_excluded').append_column(self._new_column())
-        self.builder.get_object('treeview_excluded1').append_column(self._new_column())
         self.builder.get_object('treeview_summary').append_column(self._new_column())
 
         self.builder.get_object('comboboxtext1').set_active(2)

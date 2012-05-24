@@ -32,17 +32,25 @@ class Gui:
                     path += "/"
 
                 self.builder = Gtk.Builder()
-                self.builder.add_from_file(path + "gui.ui")
+                self.builder.add_from_file(path + "mdt.ui")
 
-		self.win_main = self.builder.get_object("window_main")
+		self.win_main = self.builder.get_object("mdt_main")
+                self.win_main.connect("destroy", lambda w: Gtk.main_quit())
 
 		self.builder.connect_signals(self)
 		self.builder.get_object('set_destination').set_model(
 		    Gtk.ListStore(GObject.TYPE_STRING))
 		self.builder.get_object('restore_src').set_model(Gtk.ListStore(GObject.TYPE_STRING))
 
+                self.filelist = Gtk.ListStore(GdkPixbuf.Pixbuf, GdkPixbuf.Pixbuf, str , bool)
+                self.builder.get_object('treeview_summary').set_model(self.filelist)
+                self.builder.get_object('treeview_summary').append_column(self._new_column())
+
 		self.backupsets = backupsets
 		self.backupsets.add_change_hook(self.refresh_set_list)
+                # Fixme, backupsets needs to be a better object
+                self.currentset = self.backupsets.backupsets[-1]
+                self.show_set(self.currentset)
 		self.seteditor = SetEditor(self.backupsets)
 		self.statuswin = StatusWindow()
 		self.dialogs = dialogs.Dialogs(self.win_main)
@@ -70,10 +78,27 @@ class Gui:
 		combo.set_active(0)
 
 		# other widget initialisation
-		self.win_main.set_title(_("File Backup Manager"))
 		self.builder.get_object('cmb_backup_type').set_active(0)
 		self.builder.get_object('notebook3').set_current_page(0)
 		self.__find_cd_burners()
+                self.win_main.set_title(_("File Backup Manager"))
+                self.win_main.show()
+
+        def _new_column(self):
+            column = Gtk.TreeViewColumn()
+            column.set_title(_("Path"))
+            column.set_spacing(3)
+            renderer = Gtk.CellRendererPixbuf()
+            column.pack_start(renderer, expand=False)
+            column.add_attribute(renderer, 'pixbuf', 0)
+            renderer = Gtk.CellRendererPixbuf()
+            column.pack_start(renderer, expand=False)
+            column.add_attribute(renderer, 'pixbuf', 1)
+            renderer = Gtk.CellRendererText()
+            column.pack_start(renderer, expand=True)
+            column.add_attribute(renderer, 'text', 2)
+            return column
+
 
 	def add_prev_dest(self, dest):
 
@@ -315,7 +340,7 @@ class Gui:
 		"""
 		Show a warning dialog with a message and Yes/No buttons.
 		"""
-		dlg = Gtk.MessageDialog(self.builder.get_object('window_main'), \
+		dlg = Gtk.MessageDialog(self.builder.get_object('mdt_main'), \
                                         Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, \
                                         Gtk.ButtonsType.YES_NO, \
                                         msg)
@@ -558,7 +583,7 @@ class Gui:
 				self.dialogs.showerror(_("You don't have permission to write to '%s'.\n") % destination_path)
 			elif reason == "not_empty":
 				dlg = Gtk.MessageDialog( \
-					self.builder.get_object('window_main'), \
+					self.builder.get_object('mdt_main'), \
                                         Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, \
                                         Gtk.ButtonsType.YES_NO, \
 					(_("There are already files in '%s'.") % destination_path) + "\n"
@@ -744,19 +769,53 @@ class Gui:
 		self.drive_sel = sel
 		return True
 
+        def get_set_stock(self, bset):
+            if bset.dest[:7] == "sftp://":
+                return Gtk.STOCK_NETWORK
+            elif bset.dest[:7] == "cdrw://":
+                return Gtk.STOCK_CDROM
+            return Gtk.STOCK_DIRECTORY
+
+        def get_set_icon_name(self, bset):
+            if bset.dest[:7] == "sftp://":
+                return "gnome-fs-ssh"
+            elif bset.dest[:7] == "cdrw://":
+                return "gnome-dev-disc-cdrw"
+            return "drive-harddisk"
+
+        def show_set (self, s):
+            if s is None:
+                return
+            img = self.builder.get_object("current_set_image")
+            img.set_from_icon_name (self.get_set_icon_name(s), Gtk.IconSize.LARGE_TOOLBAR)
+
+            for f in s.files_include:
+                print '> ', f
+                self.filelist_push (f, inc=True)
+
+            for f in s.files_exclude:
+                print '< ', f
+                self.filelist_push (f, inc=False)
+
+            self.builder.get_object("current_set_name_label").set_text (s.name + ', ' + s.desc)
+
+            rset = rdiff_interface.ParseRestoreSrc(s.dest)
+            print "---> rset"
+            if rset is not None:
+                self.builder.get_object("current_first_backup_label").set_text(rset['increments'][-1][0])
+                self.builder.get_object("current_last_backup_label").set_text(rset['increments'][0][0])
+
 	def refresh_set_list(self, selected=None):
 		combo = self.builder.get_object('combo_backup_sets')
 		self.setstore.clear()
 		self.setstore.append(self.newset)
+                if self.currentset is None:
+                    self.currentset = self.backupsets.backupsets[-1]
+                    self.show_set(self.current_set)
 		for bset in self.backupsets:
-			if bset.dest[:7] == "sftp://":
-				set_type = Gtk.STOCK_NETWORK
-			elif bset.dest[:7] == "cdrw://":
-				set_type = Gtk.STOCK_CDROM
-			else:
-				set_type = Gtk.STOCK_DIRECTORY
-			self.setstore.append( [combo.render_icon(set_type,
-				Gtk.IconSize.MENU), bset.name, bset])
+                    set_type = self.get_set_stock(bset)
+                    self.setstore.append( [combo.render_icon(set_type,
+                                Gtk.IconSize.MENU), bset.name, bset])
 		if selected is not None:
 			self.select_set(selected.name)
 		else:
@@ -771,6 +830,57 @@ class Gui:
 			if row[1] == setname:
 				combo.set_active_iter(row.iter)
 				break
+
+        def filelist_remove (self, f):
+            for p in self.filelist:
+                if p[2] == f:
+                    i = self.filelist.iter_nth_child
+                    self.filelist.remove(p.iter)
+                    if self.excludes.has_key(f):
+                        del self.excludes[f]
+                    elif self.includes.has_key(f):
+                        del self.includes[f]
+                    return True
+            return False
+
+        def filelist_check_push (self, f, inc):
+            if inc == True:
+                if f in self.includes:
+                    return True
+                if f in self.excludes:
+                    self.filelist_remove (f)
+                self.includes[f] = True
+            else:
+                if f in self.excludes:
+                    return True
+                if f in self.includes:
+                    self.filelist_remove (f)
+                self.excludes[f] = True
+            return True
+
+        def filelist_push (self, f, inc=True):
+            widget = Gtk.Image()
+            icon = []
+
+            if os.path.isdir(f):
+                icon.append(Gtk.STOCK_DIRECTORY)
+            else:
+                icon.append(Gtk.STOCK_FILE)
+
+            if inc == True:
+                icon.append(Gtk.STOCK_ADD)
+            else:
+                icon.append(Gtk.STOCK_REMOVE)
+
+            self.filelist.append([widget.render_icon(icon.pop(), Gtk.IconSize.LARGE_TOOLBAR, "TreeView"),
+                                  widget.render_icon(icon.pop(), Gtk.IconSize.DIALOG, "TreeView"),
+                                  f, True])
+
+        def filelist_refresh_count (self):
+            if len(self.filelist) == 1:
+                self.builder.get_object('druidfilelist_label').set_text(_("1 item"))
+            else:
+                self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(self.filelist))
 
 	def gtk_main_quit(self, unused):
 
