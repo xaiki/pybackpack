@@ -43,8 +43,9 @@ class Gui:
 		self.builder.get_object('restore_src').set_model(Gtk.ListStore(GObject.TYPE_STRING))
 
                 self.filelist = Gtk.ListStore(GdkPixbuf.Pixbuf, GdkPixbuf.Pixbuf, str , bool)
-                self.builder.get_object('treeview_summary').set_model(self.filelist)
-                self.builder.get_object('treeview_summary').append_column(self._new_column())
+                tv = self.builder.get_object('treeview_summary')
+                tv.set_model(self.filelist)
+                tv.append_column(self._new_column())
 
 		self.backupsets = backupsets
 		self.backupsets.add_change_hook(self.refresh_set_list)
@@ -56,23 +57,41 @@ class Gui:
 		self.dialogs = dialogs.Dialogs(self.win_main)
 
 		self.setstore = Gtk.ListStore(
-				GdkPixbuf.Pixbuf,		# Icon
+                                GObject.TYPE_STRING,	# Set Icon
 				GObject.TYPE_STRING,	# Set name
 				GObject.TYPE_PYOBJECT)  # The backup set
 
+                combo = self.builder.get_object('combo_backup_sets')
+                column = Gtk.TreeViewColumn()
+                column.set_title(_("Available Backup Sets"))
+
 		renderer = Gtk.CellRendererPixbuf()
 		renderer.set_property('xalign', 0.0)
-		combo = self.builder.get_object('combo_backup_sets')
+
 		combo.pack_start(renderer, False)
-		combo.add_attribute(renderer, 'pixbuf', 0)
+                combo.add_attribute(renderer, 'stock-id', 0)
+
+                renderer = Gtk.CellRendererPixbuf()
+		renderer.set_property('xalign', 0.0)
+                renderer.set_property('stock-size', Gtk.IconSize.DIALOG)
+
+		column.pack_start(renderer, False)
+                column.add_attribute(renderer, 'stock-id', 0)
 
 		renderer = Gtk.CellRendererText()
 		renderer.set_property('xalign', 0.0)
 		combo.pack_start(renderer, True)
 		combo.add_attribute(renderer, 'text', 1)
+                column.pack_start(renderer, True)
+                column.add_attribute(renderer, 'text', 1)
 
 		combo.set_model(self.setstore)
-		self.newset = [combo.render_icon(Gtk.STOCK_NEW, Gtk.IconSize.MENU),
+
+                tv = self.builder.get_object('treeview_sets')
+                tv.set_model(self.setstore)
+                tv.append_column(column)
+
+		self.newset = [Gtk.STOCK_NEW,
 				_("New backup set"), None]
 		self.refresh_set_list()
 		combo.set_active(0)
@@ -814,8 +833,7 @@ class Gui:
                     self.show_set(self.current_set)
 		for bset in self.backupsets:
                     set_type = self.get_set_stock(bset)
-                    self.setstore.append( [combo.render_icon(set_type,
-                                Gtk.IconSize.MENU), bset.name, bset])
+                    self.setstore.append([set_type, bset.name, bset])
 		if selected is not None:
 			self.select_set(selected.name)
 		else:
