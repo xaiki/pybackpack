@@ -466,6 +466,7 @@ gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
   xatrace();  GtkCellRendererWidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
   GtkCellRendererWidgetPrivate *priv = cell->priv;
   GtkWidget *widget = priv->widget;
+  GtkWidget *window;
   GtkAllocation *alloc = (GtkAllocation *) cell_area;
   GtkStyleContext *context = gtk_widget_get_style_context (treeview);
 
@@ -476,15 +477,11 @@ gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
   int ahah = 0;
 
   cairo_surface_t *cs = NULL;
-  GdkPixbuf *p = NULL;
-  GtkWidget *box = gtk_bin_get_child (GTK_BIN(priv->hack));
-  GtkWidget *frame = get_first_child (box);
-  priv->hackimg = get_first_child (frame);
 
   if (!widget)
     return;
 
-  GtkWidget *window = g_hash_table_lookup (priv->whash, widget);
+  window = g_hash_table_lookup (priv->whash, widget);
   if (! window) {
 	  printf ("No WINDOW for %p !!! how can this happen ?!!?\n", widget);
 	  return;
@@ -509,25 +506,7 @@ gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
   }
 
   cs = gtk_offscreen_window_get_surface (GTK_OFFSCREEN_WINDOW(window));
-  p  = gtk_offscreen_window_get_pixbuf  (GTK_OFFSCREEN_WINDOW(window));
-  if (priv->hackimg) {
-    gtk_image_set_from_pixbuf (GTK_IMAGE (priv->hackimg), p);
-  } else {
-    GtkWidget * lframe = gtk_frame_new("live");
-    frame = gtk_frame_new("pixbuf");
-    box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    priv->hackimg = gtk_image_new_from_pixbuf (p);
-    gtk_container_add (GTK_CONTAINER(frame), priv->hackimg);
-    gtk_container_add (GTK_CONTAINER(box), frame);
-//    gtk_widget_reparent (widget, lframe);
-//    gtk_container_add (GTK_CONTAINER(lframe), widget);
-    gtk_container_add (GTK_CONTAINER(box), lframe);
-    gtk_container_add (GTK_CONTAINER (priv->hack), box);
-  }
 
-  xabreak();
-  if (ahah)
-    return;
   gtk_widget_show_all (priv->hack);
   cairo_save (cr);
 
