@@ -43,7 +43,7 @@ typedef struct _GtkCellRendererWidgetPrivate GtkCellRendererWidgetPrivate;
 
 struct _GtkCellRendererWidget
 {
-  GtkCellRendererText                parent;
+  GtkCellRendererPixbuf                parent;
 
   /*< private >*/
   GtkCellRendererWidgetPrivate *priv;
@@ -51,7 +51,7 @@ struct _GtkCellRendererWidget
 
 struct _GtkCellRendererWidgetClass
 {
-  GtkCellRendererTextClass parent_class;
+  GtkCellRendererPixbufClass parent_class;
 
   /* Padding for future expansion */
   void (*_gtk_reserved1) (void);
