@@ -40,7 +40,7 @@ class BackupTool:
             buset = backupsets.BackupSet(self.backupsets.configpath)
             buset.name = _('home')
             buset.desc = _("A complete backup of your home directory.")
-            buset.files_include = [self.homedir]
+            buset.add_include = [self.homedir]
             buset.dest = 'cdrw://'
             buset.path = 'home'
             buset.write()

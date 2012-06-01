@@ -80,12 +80,6 @@ class SetEditor:
 
         self.exitnotify = func
 
-    def mdt_show_prefs_cb (self, widget=None, event=None):
-        self.builder.get_object('mdt_prefs').show()
-
-    def mdt_show_file_chooser_cb (self, widget=None, event=None):
-        self.builder.get_object('filechooserwidget1').show()
-
     def show(self):
         self.builder.get_object('mdt_main').show()
 #        self.builder.get_object('mdt_prefs').show()
@@ -148,9 +142,9 @@ class SetEditor:
             self.builder.get_object('entry_new_set_name').set_sensitive(False)
             self.builder.get_object('entry_new_set_desc').set_text(buset.desc)
 
-            if buset.dest[:7] == "sftp://":
+            if buset.get_dest()[:7] == "sftp://":
                 p = re.compile("sftp://([^@]+)@([^/]+)(.*)")
-                matches = p.match(buset.dest)
+                matches = p.match(buset.get_dest())
                 if len(matches.groups()) < 3:
                     user = ""
                     host = ""
@@ -163,14 +157,14 @@ class SetEditor:
                 self.builder.get_object('entry_ssh_user').set_text(user)
                 self.builder.get_object('entry_ssh_host').set_text(host)
                 self.builder.get_object('entry_ssh_path').set_text(path)
-            elif buset.dest[:7] == "cdrw://":
+            elif buset.get_dest()[:7] == "cdrw://":
                 self.builder.get_object('cmb_dst_type').set_active(1)
             else:
                 self.builder.get_object('cmb_dst_type').set_active(0)
-                self.builder.get_object('entry_new_set_def_dest').set_text(buset.dest)
+                self.builder.get_object('entry_new_set_def_dest').set_text(buset.get_dest())
             self.builder.get_object('new_set_overwrite').set_active(True)
             druidfilelistmodel = druidfilelist.get_model()
-            for f in buset.files_exclude:
+            for f in buset.get_excludes():
                 if f == "**":
                     continue
                 if os.path.isdir(f):
@@ -181,7 +175,7 @@ class SetEditor:
                     druidfilelistmodel.append([druidfilelist.render_icon(Gtk.STOCK_REMOVE,\
                         Gtk.IconSize.MENU, "TreeView"), druidfilelist.render_icon(\
                         Gtk.STOCK_FILE, Gtk.IconSize.MENU, "TreeView"), f, False])
-            for f in buset.files_include:
+            for f in buset.get_includes():
                 if os.path.isdir(f):
                     druidfilelistmodel.append([druidfilelist.render_icon(Gtk.STOCK_ADD,\
                         Gtk.IconSize.MENU, "TreeView"), druidfilelist.render_icon(\
@@ -314,10 +308,10 @@ class SetEditor:
         if not buset.path:
             buset.path = buset.name
         buset.desc = self.builder.get_object('druid_summary_desc').get_text()
-        buset.dest = self.builder.get_object('druid_summary_dest').get_text()
+        buset.set_dest(self.builder.get_object('druid_summary_dest').get_text())
         buset.removable = self.builder.get_object('chk_removable_device').get_active()
-        buset.files_include = self.includes
-        buset.files_exclude = self.excludes
+#        buset.files_include = self.includes
+#        buset.files_exclude = self.excludes
         try:
             buset.write()
             if buset not in self.backupsets:
@@ -333,82 +327,11 @@ class SetEditor:
 #    def filechooser_done_cb(self, widget):
 #        self.builder.get_object('filechooserwidget1').hide()
 
-    def prefs_done_cb(self, widget):
-#        self.builder.get_object('filechooserwidget1').hidea()
-        self.builder.get_object('mdt_prefs').hide()
-
-    def filelist_remove (self, f):
-        for p in self.filelist:
-            if p[2] == f:
-                i = self.filelist.iter_nth_child
-                self.filelist.remove(p.iter)
-                if self.excludes.has_key(f):
-                    del self.excludes[f]
-                elif self.includes.has_key(f):
-                    del self.includes[f]
-                return True
-        return False
-
-    def filelist_push (self, f, inc=True):
-        widget = Gtk.Image()
-        icon = []
-
-        if os.path.isdir(f):
-            icon.append(Gtk.STOCK_DIRECTORY)
-        else:
-            icon.append(Gtk.STOCK_FILE)
-
-        if inc == True:
-            if f in self.includes:
-                return
-            if f in self.excludes:
-                self.filelist_remove (f)
-            self.includes[f] = True
-            icon.append(Gtk.STOCK_ADD)
-        else:
-            if f in self.excludes:
-                return
-            if f in self.includes:
-                self.filelist_remove (f)
-            self.excludes[f] = True
-            icon.append(Gtk.STOCK_REMOVE)
-
-        self.filelist.append([widget.render_icon(icon.pop(), Gtk.IconSize.LARGE_TOOLBAR, "TreeView"),
-                              widget.render_icon(icon.pop(), Gtk.IconSize.DIALOG, "TreeView"),
-                              f, True])
-
     def filelist_refresh_count (self):
         if len(self.filelist) == 1:
             self.builder.get_object('druidfilelist_label').set_text(_("1 item"))
         else:
             self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(self.filelist))
-
-    def on_button_add_to_set_clicked(self, widget):
-        for f in self.builder.get_object('filechooserwidget1').get_filenames():
-            self.filelist_push (f, inc=True)
-        self.filelist_refresh_count ()
-#        self.builder.get_object('filechooserwidget1').unselect_all()
-
-    def on_button_exc_from_set_clicked(self, widget):
-        for f in self.builder.get_object('filechooserwidget1').get_filenames():
-            self.filelist_push (f, inc=False)
-        self.filelist_refresh_count ()
-
-#        self.builder.get_object('filechooserwidget1').unselect_all()
-
-    def on_button_remove_from_set_clicked(self, widget):
-        selection = self.builder.get_object('treeview_excluded').get_selection()
-        store, row = selection.get_selected()
-        if row is not None:
-            store.remove(row)
-            if len(self.filelist)==1:
-                self.builder.get_object('druidfilelist_label').set_text(_("1 item"))
-            else:
-                self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(self.filelist))
-        else: # this is really hackish, how can we get a better behaviour ?
-            for f in self.builder.get_object('filechooserwidget1').get_filenames():
-                self.filelist_remove(f)
-
 
     def find_cd_burners(self):
 

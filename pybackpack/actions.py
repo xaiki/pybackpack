@@ -136,16 +136,16 @@ class Backup:
 		count = 0
 		self.report_progress(_("Analyzing source files"))
 
-		for path in bset.files_include:
-			if path == bset.dest:
+		for path in bset.get_includes():
+			if path == bset.get_dest():
 				ui.statuswin.addmsg(_("Destination directory in backup source. Omitting."))
 			elif os.path.isdir(path):
 				for dirname, dirs, files in os.walk(path):
 					for f in files:
 						fullpath = os.path.join(dirname, f)
-						if fullpath in bset.files_exclude:
+						if fullpath in bset.get_excludes():
 							continue
-						if fullpath == bset.dest:
+						if fullpath == bset.get_dest():
 							ui.statuswin.addmsg(_("NOTE: Destination directory inside backup set. Omitting."))
 						elif os.path.islink(fullpath):
 							count += 1
@@ -153,7 +153,7 @@ class Backup:
 							count += 1
 					for d in dirs:
 						fullpath = os.path.join(dirname, d)
-						if fullpath in bset.files_exclude:
+						if fullpath in bset.get_excludes():
 							dirs.remove(d)
 							continue
 						if os.access(fullpath, os.R_OK|os.X_OK):

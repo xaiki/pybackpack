@@ -1,6 +1,7 @@
 from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Gtk
+from gi.repository import Xtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 
@@ -13,7 +14,6 @@ try:
 except ImportError:
 	pass
 
-import rdiff_interface
 import version
 import dialogs
 import actions
@@ -41,17 +41,15 @@ class Gui:
 		self.builder.get_object('set_destination').set_model(
 		    Gtk.ListStore(GObject.TYPE_STRING))
 		self.builder.get_object('restore_src').set_model(Gtk.ListStore(GObject.TYPE_STRING))
-
-                self.filelist = Gtk.ListStore(GdkPixbuf.Pixbuf, GdkPixbuf.Pixbuf, str , bool)
                 tv = self.builder.get_object('treeview_summary')
-                tv.set_model(self.filelist)
+                tv.append_column(self._new_column())
+                tv = self.builder.get_object('treeview_excluded')
                 tv.append_column(self._new_column())
 
 		self.backupsets = backupsets
 		self.backupsets.add_change_hook(self.refresh_set_list)
                 # Fixme, backupsets needs to be a better object
-                self.currentset = self.backupsets.backupsets[-1]
-                self.show_set(self.currentset)
+                self.currentset = None
 		self.seteditor = SetEditor(self.backupsets)
 		self.statuswin = StatusWindow()
 		self.dialogs = dialogs.Dialogs(self.win_main)
@@ -59,7 +57,8 @@ class Gui:
 		self.setstore = Gtk.ListStore(
                                 GObject.TYPE_STRING,	# Set Icon
 				GObject.TYPE_STRING,	# Set name
-				GObject.TYPE_PYOBJECT)  # The backup set
+				GObject.TYPE_PYOBJECT,  # The backup set
+                                GObject.TYPE_OBJECT)    # The display widget
 
                 combo = self.builder.get_object('combo_backup_sets')
                 column = Gtk.TreeViewColumn()
@@ -69,21 +68,24 @@ class Gui:
 		renderer.set_property('xalign', 0.0)
 
 		combo.pack_start(renderer, False)
-                combo.add_attribute(renderer, 'stock-id', 0)
+                combo.add_attribute(renderer, 'icon-name', 0)
 
                 renderer = Gtk.CellRendererPixbuf()
 		renderer.set_property('xalign', 0.0)
                 renderer.set_property('stock-size', Gtk.IconSize.DIALOG)
 
 		column.pack_start(renderer, False)
-                column.add_attribute(renderer, 'stock-id', 0)
+                column.add_attribute(renderer, 'icon-name', 0)
 
 		renderer = Gtk.CellRendererText()
 		renderer.set_property('xalign', 0.0)
 		combo.pack_start(renderer, True)
 		combo.add_attribute(renderer, 'text', 1)
+
+                renderer = Xtk.CellRendererWidget()
+
                 column.pack_start(renderer, True)
-                column.add_attribute(renderer, 'text', 1)
+                column.add_attribute(renderer, 'widget', 3)
 
 		combo.set_model(self.setstore)
 
@@ -92,7 +94,8 @@ class Gui:
                 tv.append_column(column)
 
 		self.newset = [Gtk.STOCK_NEW,
-				_("New backup set"), None]
+				_("New backup set"), None,
+                                self.title_label("New backup set")]
 		self.refresh_set_list()
 		combo.set_active(0)
 
@@ -102,6 +105,7 @@ class Gui:
 		self.__find_cd_burners()
                 self.win_main.set_title(_("File Backup Manager"))
                 self.win_main.show()
+                self.builder.get_object("treeview_sets").grab_focus()
 
         def _new_column(self):
             column = Gtk.TreeViewColumn()
@@ -109,10 +113,10 @@ class Gui:
             column.set_spacing(3)
             renderer = Gtk.CellRendererPixbuf()
             column.pack_start(renderer, expand=False)
-            column.add_attribute(renderer, 'pixbuf', 0)
+            column.add_attribute(renderer, 'stock-id', 0)
             renderer = Gtk.CellRendererPixbuf()
             column.pack_start(renderer, expand=False)
-            column.add_attribute(renderer, 'pixbuf', 1)
+            column.add_attribute(renderer, 'stock-id', 1)
             renderer = Gtk.CellRendererText()
             column.pack_start(renderer, expand=True)
             column.add_attribute(renderer, 'text', 2)
@@ -162,9 +166,9 @@ class Gui:
 						'backup_ssh_path']:
 			self.builder.get_object(widget).set_text('')
 		self.builder.get_object('set_destination').get_child().set_text('')
-		if selected.dest[:7] == "sftp://":
+		if selected.get_dest()[:7] == "sftp://":
 			p = re.compile("sftp://([^@]+)@([^/]+)(.*)")
-			matches = p.match(selected.dest)
+			matches = p.match(selected.get_dest())
 			if len(matches.groups()) < 3:
 				user = ""
 				host = ""
@@ -178,8 +182,8 @@ class Gui:
 			self.builder.get_object('backup_ssh_host').set_text(host)
 			self.builder.get_object('backup_ssh_path').set_text(path)
 			self.builder.get_object('button_do_backup').set_sensitive(True)
-		elif selected.dest[:7] == "cdrw://":
-			device = selected.dest.replace("cdrw://", "")
+		elif selected.get_dest()[:7] == "cdrw://":
+			device = selected.get_dest().replace("cdrw://", "")
 			self.builder.get_object('cmb_backup_type').set_active(1)
 			for row in self.drive_sel.get_model():
 				if row[0] and row[0].get_device() == device:
@@ -191,7 +195,7 @@ class Gui:
 			else:
 				self.builder.get_object('backup_removable').set_active(False)
 			self.builder.get_object('cmb_backup_type').set_active(0)
-			self.builder.get_object('set_destination').get_child().set_text(selected.dest)
+			self.builder.get_object('set_destination').get_child().set_text(selected.get_dest())
 		self.builder.get_object('frame_dest').set_sensitive(True)
 		self.builder.get_object('button_delete_set').set_sensitive(True)
 
@@ -637,7 +641,7 @@ class Gui:
 			self.statuswin.addmsg(_("CD copy finished."))
 		self.show_progress(0.5, _("Restoring files..."))
 		self.builder.get_object('button_do_restore').set_sensitive(False)
-		self.builder.get_object('menu_backup').set_sensitive(False)
+		self.builder.seget_object('menu_backup').set_sensitive(False)
 		self.builder.get_object('menu_restore').set_sensitive(False)
 		stdout = LogHandler(self.statuswin, None, 0, True)
 		stderr = LogHandler(self.statuswin)
@@ -788,41 +792,92 @@ class Gui:
 		self.drive_sel = sel
 		return True
 
-        def get_set_stock(self, bset):
-            if bset.dest[:7] == "sftp://":
-                return Gtk.STOCK_NETWORK
-            elif bset.dest[:7] == "cdrw://":
-                return Gtk.STOCK_CDROM
-            return Gtk.STOCK_DIRECTORY
+        def widget_dance (self, w1, w2):
+            parent1 = w1.get_parent()
+            parent2 = w2.get_parent()
+            parent1.remove(w1)
+            parent2.remove(w2)
+            parent1.add(w2)
+            parent2.add(w1)
+            w2.grab_focus()
 
-        def get_set_icon_name(self, bset):
-            if bset.dest[:7] == "sftp://":
-                return "gnome-fs-ssh"
-            elif bset.dest[:7] == "cdrw://":
-                return "gnome-dev-disc-cdrw"
-            return "drive-harddisk"
+
+        def back_button_clicked_cb (self, tv):
+            self.builder.get_object("scrolled_sets").props.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC
+            self.widget_dance (self.builder.get_object("set_vp"), tv)
+
+        def treeview_sets_row_activated_cb (self, tv, path, column):
+            selection = tv.get_selection()
+            store, row = selection.get_selected()
+
+            self.show_set (store[path][2])
+            self.builder.get_object("scrolled_sets").props.vscrollbar_policy = Gtk.PolicyType.NEVER
+            # intent re-alloc
+            self.builder.get_object("scrolled_sets").props.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC
+            self.widget_dance(tv, self.builder.get_object("set_vp"))
+            self.builder.get_object("back_button").grab_focus()
 
         def show_set (self, s):
             if s is None:
                 return
+
+            self.currentset = s
+
             img = self.builder.get_object("current_set_image")
-            img.set_from_icon_name (self.get_set_icon_name(s), Gtk.IconSize.LARGE_TOOLBAR)
+            img.set_from_icon_name (s.get_icon_name(), Gtk.IconSize.LARGE_TOOLBAR)
 
-            for f in s.files_include:
-                print '> ', f
-                self.filelist_push (f, inc=True)
+            tv = self.builder.get_object('treeview_summary')
+            tv.set_model(s.get_model())
 
-            for f in s.files_exclude:
-                print '< ', f
-                self.filelist_push (f, inc=False)
+            tv = self.builder.get_object('treeview_excluded')
+            tv.set_model(s.get_model())
 
-            self.builder.get_object("current_set_name_label").set_text (s.name + ', ' + s.desc)
+            self.builder.get_object("current_set_name_label").set_text (s.name)
+            self.builder.get_object("current_set_name_label").set_text (s.desc)
 
-            rset = rdiff_interface.ParseRestoreSrc(s.dest)
-            print "---> rset"
-            if rset is not None:
-                self.builder.get_object("current_first_backup_label").set_text(rset['increments'][-1][0])
-                self.builder.get_object("current_last_backup_label").set_text(rset['increments'][0][0])
+            if s.rset is not None:
+                self.builder.get_object("current_first_backup_label").set_text(s.rset['increments'][-1][0])
+                self.builder.get_object("current_last_backup_label").set_text(s.rset['increments'][0][0])
+
+        def format_title (self, s):
+            return '<span font_weight="bold" font_variant="smallcaps">' + s +  '</span>'
+
+        def format_subtitle (self, s):
+            return '<span font_weight="light" font_variant="smallcaps">' + s +  '</span>'
+
+        def title_label (self, s):
+            l = Gtk.Label()
+            l.set_markup (self.format_title(s))
+            l.set_alignment (0, 0.5)
+
+            return l
+
+        def subtitle_label (self, s):
+            l = Gtk.Label()
+            l.set_markup (self.format_subtitle(s))
+            l.set_alignment (0, 0.5)
+
+            return l
+
+        def make_descriptor_widget (self, bset):
+            builder = Gtk.Builder()
+            builder.add_from_file ("cellwidget.ui")
+
+            last_backup = first_backup = "--"
+            if bset.rset is not None:
+                first_backup = bset.rset['increments'][-1][0]
+                last_backup  = bset.rset['increments'][0][0]
+
+            builder.get_object("name").set_text (bset.name)
+            builder.get_object("desc").set_text (bset.desc)
+            builder.get_object("avail").set_text (bset.avail)
+            builder.get_object("first_backup").set_text (first_backup)
+            builder.get_object("last_backup").set_text (last_backup)
+
+            w = builder.get_object("widget")
+            w.show_all()
+
+            return w
 
 	def refresh_set_list(self, selected=None):
 		combo = self.builder.get_object('combo_backup_sets')
@@ -830,10 +885,11 @@ class Gui:
 		self.setstore.append(self.newset)
                 if self.currentset is None:
                     self.currentset = self.backupsets.backupsets[-1]
-                    self.show_set(self.current_set)
+                    self.show_set(self.currentset)
 		for bset in self.backupsets:
-                    set_type = self.get_set_stock(bset)
-                    self.setstore.append([set_type, bset.name, bset])
+                    self.setstore.append([bset.get_icon_name(),
+                                          bset.name, bset,
+                                          self.make_descriptor_widget(bset)])
 		if selected is not None:
 			self.select_set(selected.name)
 		else:
@@ -849,56 +905,42 @@ class Gui:
 				combo.set_active_iter(row.iter)
 				break
 
-        def filelist_remove (self, f):
-            for p in self.filelist:
-                if p[2] == f:
-                    i = self.filelist.iter_nth_child
-                    self.filelist.remove(p.iter)
-                    if self.excludes.has_key(f):
-                        del self.excludes[f]
-                    elif self.includes.has_key(f):
-                        del self.includes[f]
-                    return True
-            return False
-
-        def filelist_check_push (self, f, inc):
-            if inc == True:
-                if f in self.includes:
-                    return True
-                if f in self.excludes:
-                    self.filelist_remove (f)
-                self.includes[f] = True
-            else:
-                if f in self.excludes:
-                    return True
-                if f in self.includes:
-                    self.filelist_remove (f)
-                self.excludes[f] = True
-            return True
-
-        def filelist_push (self, f, inc=True):
-            widget = Gtk.Image()
-            icon = []
-
-            if os.path.isdir(f):
-                icon.append(Gtk.STOCK_DIRECTORY)
-            else:
-                icon.append(Gtk.STOCK_FILE)
-
-            if inc == True:
-                icon.append(Gtk.STOCK_ADD)
-            else:
-                icon.append(Gtk.STOCK_REMOVE)
-
-            self.filelist.append([widget.render_icon(icon.pop(), Gtk.IconSize.LARGE_TOOLBAR, "TreeView"),
-                                  widget.render_icon(icon.pop(), Gtk.IconSize.DIALOG, "TreeView"),
-                                  f, True])
-
-        def filelist_refresh_count (self):
-            if len(self.filelist) == 1:
+        def filelist_refresh_count (self, filelist):
+            if len(filelist) == 1:
                 self.builder.get_object('druidfilelist_label').set_text(_("1 item"))
             else:
-                self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(self.filelist))
+                self.builder.get_object('druidfilelist_label').set_text(_("%d items")%len(filelist))
+
+        def mdt_show_prefs_cb (self, widget=None, event=None):
+            self.builder.get_object('mdt_prefs').show()
+
+        def mdt_show_file_chooser_cb (self, widget=None, event=None):
+            self.builder.get_object('filechooserwidget1').show()
+
+        def prefs_done_cb(self, widget):
+            #        self.builder.get_object('filechooserwidget1').hidea()
+            self.builder.get_object('mdt_prefs').hide()
+
+        def on_button_add_to_set_clicked(self, widget):
+            for f in self.builder.get_object('filechooserwidget1').get_filenames():
+                self.currentset.add_include (f)
+    #        self.builder.get_object('filechooserwidget1').unselect_all()
+
+        def on_button_exc_from_set_clicked(self, widget):
+            for f in self.builder.get_object('filechooserwidget1').get_filenames():
+                self.currentset.add_exclude (f)
+
+    #        self.builder.get_object('filechooserwidget1').unselect_all()
+
+        def on_button_remove_from_set_clicked(self, widget):
+            selection = self.builder.get_object('treeview_excluded').get_selection()
+            store, row = selection.get_selected()
+            if row is not None:
+                store.remove(row)
+
+            else: # this is really hackish, how can we get a better behaviour ?
+                for f in self.builder.get_object('filechooserwidget1').get_filenames():
+                    self.currentset.remove(f)
 
 	def gtk_main_quit(self, unused):
 

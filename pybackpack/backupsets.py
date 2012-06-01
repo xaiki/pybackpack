@@ -1,4 +1,7 @@
+from gi.repository import Gtk
+
 import os
+import rdiff_interface
 from sys import stderr
 from ConfigParser import SafeConfigParser, NoOptionError
 
@@ -11,13 +14,16 @@ class BackupSet:
         """Initialise a BackupSet"""
 
         self.setspath = os.path.join(configpath,"sets")
-        self.files_include = []
-        self.files_exclude = []
+        self._includes = {}
+        self._excludes = {}
         self.name = ""
         self.path = ""
         self.desc = ""
-        self.dest = ""
+        self._dest = ""
+        self.rdiff = None
+        self.avail = "UNIMPLEMENTED"
         self.removable = False
+        self.filelist = Gtk.ListStore(str , str , str , bool)
 
     def delete(self):
 
@@ -47,7 +53,7 @@ class BackupSet:
         cp.add_section("Set")
         cp.set("Set", "name", str(self.name))
         cp.set("Set", "desc", str(self.desc))
-        cp.set("Set", "dest", str(self.dest))
+        cp.set("Set", "dest", str(self._dest))
         cp.set("Set", "removable", str(self.removable))
         # TODO: Find out which other keys we use (if any)
 
@@ -57,14 +63,99 @@ class BackupSet:
 
         flist = open(os.path.join(self.setspath, self.name, "filelist"), "w")
 
-        for path in self.files_exclude:
+        for path in self.get_excludes():
             flist.write("- %s\n" % path)
 
-        for path in self.files_include:
+        for path in self.get_includes():
             flist.write("+ %s\n" % path)
 
         flist.write("- **\n")
         flist.close()
+
+    def set_dest (self, s):
+        self.rset = rdiff_interface.ParseRestoreSrc(s)
+        self._dest = s
+
+    def get_dest (self):
+        return self._dest
+
+    def get_model (self):
+        return self.filelist
+
+    def get_includes (self):
+        return self._includes.keys()
+
+    def get_excludes (self):
+        return self._excludes.keys()
+
+    def remove (self, f):
+        for p in self.filelist:
+            if p[2] == f:
+                i = self.filelist.iter_nth_child
+                self.filelist.remove(p.iter)
+                if self._excludes.has_key(f):
+                    del self._excludes[f]
+                elif self._includes.has_key(f):
+                    del self._includes[f]
+                return True
+        return False
+
+    def _check_add (self, f, inc):
+        if inc == True:
+            if f in self._includes:
+                return True
+            if f in self._excludes:
+                self.remove (f)
+            self._includes[f] = True
+        else:
+            if f in self._excludes:
+                return True
+            if f in self._includes:
+                self.remove (f)
+            self._excludes[f] = True
+        return True
+
+    def add_exclude (self, f):
+        return self.add(f, inc=False)
+
+    def add_include (self, f):
+        return self.add(f, inc=True)
+
+    def get_stock(self):
+        if self.get_dest()[:7] == "sftp://":
+            return Gtk.STOCK_NETWORK
+        elif self.get_dest()[:7] == "cdrw://":
+            return Gtk.STOCK_CDROM
+        return Gtk.STOCK_DIRECTORY
+
+    def get_icon_name(self):
+        if self.get_dest()[:7] == "sftp://":
+            return "gnome-fs-ssh"
+        elif self.get_dest()[:7] == "cdrw://":
+            return "gnome-dev-disc-cdrw"
+        return "gnome-dev-harddisk"
+
+
+    def add (self, f, inc=True):
+        if f == "**":
+            print "Skipping malformated file: **", inc
+            return
+        widget = Gtk.Image()
+        icon = []
+
+        if os.path.isdir(f):
+            icon.append(Gtk.STOCK_DIRECTORY)
+        else:
+            icon.append(Gtk.STOCK_FILE)
+
+        if inc == True:
+            icon.append(Gtk.STOCK_ADD)
+        else:
+            icon.append(Gtk.STOCK_REMOVE)
+
+        self.filelist.append([icon.pop(),
+                              icon.pop(),
+                              f, True])
 
     def __str__(self):
 
@@ -72,11 +163,11 @@ class BackupSet:
            Useful for debugging."""
 
         s = "Backup set: " + self.name
-        s += "\n`Files to include: " + str(self.files_include)
-        s += "\n Files to exclude: " + str(self.files_exclude)
+        s += "\n`Files to include: " + str(self.get_includes())
+        s += "\n Files to exclude: " + str(self.get_excludes())
         s += "\n Path: " + self.path
         s += "\n Desc: " + self.desc
-        s += "\n Dest: " + self.dest
+        s += "\n Dest: " + self._dest
         s += "\n `Removable: " + str(self.removable)
 	return s
 
@@ -174,9 +265,9 @@ class BackupSets:
                     if l[0] == "#":
                         continue
                     elif l[0] == "-":
-                        buset.files_exclude.append(l[2:].strip())
+                        buset.add_exclude(l[2:].strip())
                     elif l[0] == "+":
-                        buset.files_include.append(l[2:].strip())
+                        buset.add_include(l[2:].strip())
                     else:
                         continue
                 cp = SafeConfigParser()
@@ -187,7 +278,7 @@ class BackupSets:
                 try:
                     buset.name = cp.get('Set', 'name')
                     buset.desc = cp.get('Set', 'desc')
-                    buset.dest = cp.get('Set', 'dest')
+                    buset.set_dest(cp.get('Set', 'dest'))
                     rm = cp.get('Set', 'removable')
                     if rm == 'True':
                         buset.removable = True
